@@ -12,9 +12,9 @@
 <br>
 [![Follow @bonifaceebuka on X](https://img.shields.io/twitter/follow/bonifaceebuka?logo=X&color=%23f5f5f5)](https://twitter.com/intent/follow?screen_name=bonifaceebuka)
 
-[![Follow @bonifaceebuka on LinkedIn](https://img.shields.io/linkedin/follow?logo=linkedin&color=%23f5f5f5)](https://www.linkedin.com/in/build-with-ebuka)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Follow-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/build-with-ebuka)
 
-[![Follow @bonifaceebuka on Facebook](https://img.shields.io/facebook/follow?logo=facebook&color=%23f5f5f5)](https://www.facebook.com/boniface.ebuka.5)
+[![Facebook](https://img.shields.io/badge/Facebook-Follow-1877F2?logo=facebook&logoColor=white)](https://www.facebook.com/boniface.ebuka.5)
 
 </div>
 
