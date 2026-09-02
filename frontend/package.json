@@ -1,7 +1,9 @@
 {
-  "name": "main-dashboard",
+  "name": "logsjar-frontend",
   "version": "0.1.0",
   "private": true,
+  "author": "Agbo Boniface Ebuka",
+  "description": "Logsjar Frontend service",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
