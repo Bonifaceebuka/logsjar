@@ -1,6 +1,3 @@
-
-
-
 <a href="https://logsjar.com">
   <img width="1200" height="675" alt="Twitter post - 2" src="https://github.com/Bonifaceebuka/logsjar/blob/3cc621a7137311b6ff59194678b244903d077ba8/screenshots/landing-page.png" />
 </a>
@@ -9,27 +6,25 @@
   
 <br />
 
-[![Last Commit](https://img.shields.io/github/last-commit/superloglabs/superlog?labelColor=333333&color=666666)](https://github.com/Bonifaceebuka/logsjar/commits/main)
-[![Commit Activity](https://img.shields.io/github/commit-activity/m/superloglabs/superlog?labelColor=333333&color=666666)](https://github.com/Bonifaceebuka/logsjar/graphs/commit-activity)
-<!-- [![MCP Toplist](https://mcptoplist.com/badge/sh.superlog%2Fsuperlog.svg)](https://mcptoplist.com/server/sh.superlog%2Fsuperlog) -->
-<!-- [![Apache 2.0 License](https://img.shields.io/badge/License-Apache_2.0-555555.svg?labelColor=333333&color=666666)](./LICENSE.md)
+[![Last Commit](https://img.shields.io/github/last-commit/Bonifaceebuka/logsjar?labelColor=333333&color=666666)](https://github.com/Bonifaceebuka/logsjar/commits/main)
+[![Commit Activity](https://img.shields.io/github/commit-activity/m/logsjar?labelColor=333333&color=666666)](https://github.com/Bonifaceebuka/logsjar/graphs/commit-activity)
 <br>
-[![Discord](https://img.shields.io/discord/1511214206123380867?logo=discord&logoColor=white&label=Discord&color=5865F2)](https://discord.gg/wJ56aRh8hx)
-<a href="https://www.ycombinator.com"><img src="https://img.shields.io/badge/Y%20Combinator-P26-orange" alt="Y Combinator P26"></a>
-[![Follow @superlogYC on X](https://img.shields.io/twitter/follow/superlogyc?logo=X&color=%23f5f5f5)](https://twitter.com/intent/follow?screen_name=superlogYC) -->
+[![Follow @bonifaceebuka on X](https://img.shields.io/twitter/follow/bonifaceebuka?logo=X&color=%23f5f5f5)](https://twitter.com/intent/follow?screen_name=bonifaceebuka)
+
+[![Follow @bonifaceebuka on LinkedIn](https://img.shields.io/linkedin/follow?logo=linkedin&color=%23f5f5f5)](https://www.linkedin.com/in/build-with-ebuka)
+
+[![Follow @bonifaceebuka on Facebook](https://img.shields.io/facebook/follow?logo=facebook&color=%23f5f5f5)](https://www.facebook.com/boniface.ebuka.5)
 
 </div>
 
 <p align="center">
-  <a href="https://superlog.sh">Website</a>
+  <a href="https://logsjar.sh">Website</a>
   ·
   <a href="https://github.com/Bonifaceebuka/logsjar">Code</a>
   ·
-  <a href="https://github.com/superloglabs/skills">Features</a>
+  <a href="https://bonifaceebuka.vercel.app">Developer</a>
   ·
-  <a href="https://github.com/Bonifaceebuka">Developer</a>
-  ·
-  <a href="https://discord.gg/wJ56aRh8hx">WhatsApp</a>
+  <a href="https://api.whatsapp.com/send/?phone=2348135759609&text=Hi+Boniface+-+I+want+to+start+a+new+project.+Can+we+discuss%3F&type=phone_number&app_absent=0">WhatsApp</a>
 </p>
 
 ## About
