@@ -7,7 +7,8 @@
 <br />
 
 [![Last Commit](https://img.shields.io/github/last-commit/Bonifaceebuka/logsjar?labelColor=333333&color=666666)](https://github.com/Bonifaceebuka/logsjar/commits/main)
-[![Commit Activity](https://img.shields.io/github/commit-activity/m/logsjar?labelColor=333333&color=666666)](https://github.com/Bonifaceebuka/logsjar/graphs/commit-activity)
+
+[![Commit Activity](https://img.shields.io/github/commit-activity/m/logsjar/logsjar?labelColor=333333&color=666666)](https://github.com/Bonifaceebuka/logsjar/graphs/commit-activity)
 <br>
 [![Follow @bonifaceebuka on X](https://img.shields.io/twitter/follow/bonifaceebuka?logo=X&color=%23f5f5f5)](https://twitter.com/intent/follow?screen_name=bonifaceebuka)
 
