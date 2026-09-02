@@ -36,42 +36,74 @@
 
 ## What is Superlog?
 
-[Logsjar](https://logsjar.com) is an open-source production-worthy real-time software log monitoring tool. It
-ingests logs and watches your infra while you sleep.
+[Logsjar](https://logsjar.com) is an open-source production-worthy real-time software log monitoring tool. It ingests logs and watches your infra while you sleep.
 
-Superlog is an open-core observability workspace for OpenTelemetry data. It
-ingests traces, logs, and metrics, groups noisy signals into incidents, and gives
-teams a local-first product surface for debugging production systems.
+This repository contains the fully open-source, free developer edition containing:
 
-This repository contains the fully open-source, free community edition:
-
-- Web app and API
-- OTLP ingest proxy
+- Web app and RESTful API
 - Worker processes for incident grouping and background jobs
-- Postgres schema and ClickHouse-backed telemetry queries
-- Agent runner interfaces for pluggable investigation runtimes
-- A default `community` agent runner that records a local incident summary
+- Postgres schema and ClickHouse-backed queries.
 
-We also provide a hosted Superlog Cloud edition with a free tier, a pay-to-go plan and monthly credit packs.
+I am also planning to provide a hosted Logsjar Cloud edition with a free tier, a pay-as-you-go plan and monthly plans.
+
+## System Requirements
+Logsjar was built and tested on a Windows 11 64-bit Operating System with the following specifications:
+
+- **Node.js**: Version 20.19.5
+- **npm**: Version 10.8.2
+
+
+## Repository Layout
+
+- `frontend` - Nextjs frontend
+- `backend` - HTTP RESTful API that is built with Nodejs, Typescript & Expressjs
+
+
+## Tech Stack & Libraries Used for the Frontend
+
+- **Nextjs**
+- **TypeScript**
+- **Zustand**
+- **Zod**
+- **Axios**
+- **Tanstack Query**
+- **Tailwind CSS**
+- **Shadcn-ui**
+
+
+## Tech Stack & Libraries Used for the Backend
+
+- **Node.js**
+- **Postgresql**
+- **Clickhouse**
+- **Winston log**
+- **Swagger UI**
+- **Dotenv**
 
 ## Installation
 
 You can install Logsjar in your project by following the steps below:
 
-```
-Run npx skills add superloglabs/skills --all and use the skills to install Logsjar in this project
-```
-
-## Quick Start
-
-Prerequisites:
-
-- Node.js 20+
-
-Install dependencies:
+### Frontend Installation
 
 ```bash
-pnpm install
+git clone https://github.com/Bonifaceebuka/logsjar.git
+cd logsjar/frontend
+cp .env.example .env
+Update the environment variables to match your setup is locally
+npm install
+npm run dev
+```
+
+### Backend Installation
+
+```bash
+git clone https://github.com/Bonifaceebuka/logsjar.git
+cd logsjar/backend
+cp .env.example .env
+Update the environment variables to match your setup is locally
+npm install
+npm run dev
 ```
 
 The default local services are:
@@ -79,19 +111,6 @@ The default local services are:
 - Web: `http://localhost:3000`
 - API: `http://localhost:2026/api`
 
-## Development
-
-Run typechecks:
-
-```bash
-pnpm typecheck
-```
-
-## Repository Layout
-
-- `frontend` - Nextjs frontend
-- `backend` - HTTP RESTful API that is built with Nodejs, Typescript & Expressjs
-
 ## License
 
-Logsjar is licensed under the [Apache License 2.0](./LICENSE.md).
+Logsjar is totally free to use for anyone that has access to the codebase.
