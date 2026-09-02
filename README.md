@@ -7,13 +7,10 @@
 <br />
 
 [![Last Commit](https://img.shields.io/github/last-commit/Bonifaceebuka/logsjar?labelColor=333333&color=666666)](https://github.com/Bonifaceebuka/logsjar/commits/main)
-
 [![Commit Activity](https://img.shields.io/github/commit-activity/m/Bonifaceebuka/logsjar?labelColor=333333&color=666666)](https://github.com/Bonifaceebuka/logsjar/graphs/commit-activity)
 <br>
 [![Follow @bonifaceebuka on X](https://img.shields.io/twitter/follow/bonifaceebuka?logo=X&color=%23f5f5f5)](https://twitter.com/intent/follow?screen_name=bonifaceebuka)
-
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Follow-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/build-with-ebuka)
-
 [![Facebook](https://img.shields.io/badge/Facebook-Follow-1877F2?logo=facebook&logoColor=white)](https://www.facebook.com/boniface.ebuka.5)
 
 </div>
