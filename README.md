@@ -16,7 +16,7 @@
 </div>
 
 <p align="center">
-  <a href="https://logsjar.sh">Website</a>
+  <a href="https://logsjar.com">Website</a>
   ·
   <a href="https://github.com/Bonifaceebuka/logsjar">Code</a>
   ·
@@ -27,15 +27,15 @@
 
 ## About
 
-## What is Superlog?
+## What is LogsJar?
 
 [Logsjar](https://logsjar.com) is an open-source production-worthy real-time software log monitoring tool. It ingests logs and watches your infra while you sleep.
 
 This repository contains the fully open-source, free developer edition containing:
 
-- Web app and RESTful API
-- Worker processes for incident grouping and background jobs
-- Postgres schema and ClickHouse-backed queries.
+- Web frontend and RESTful API
+- Background workers & Jobs for log processing
+- Postgres and ClickHouse-backed queries for log filtering.
 
 I am also planning to provide a hosted Logsjar Cloud edition with a free tier, a pay-as-you-go plan and monthly plans.
 
@@ -45,14 +45,13 @@ Logsjar was built and tested on a Windows 11 64-bit Operating System with the fo
 - **Node.js**: Version 20.19.5
 - **npm**: Version 10.8.2
 
-
 ## Repository Layout
 
 - `frontend` - Nextjs frontend
 - `backend` - HTTP RESTful API that is built with Nodejs, Typescript & Expressjs
 
 
-## Tech Stack & Libraries Used for the Frontend
+## Some Tools & Libraries Used on the Frontend
 
 - **Nextjs**
 - **TypeScript**
@@ -64,7 +63,7 @@ Logsjar was built and tested on a Windows 11 64-bit Operating System with the fo
 - **Shadcn-ui**
 
 
-## Tech Stack & Libraries Used for the Backend
+## Tools & Libraries Used on the Backend
 
 - **Node.js**
 - **Postgresql**
