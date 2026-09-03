@@ -1,20 +1,19 @@
-import { plainToInstance } from 'class-transformer';
-import { validate } from 'class-validator';
-import { RequestHandler } from 'express';
 import dns from 'dns/promises';
+import { plainToInstance, ClassConstructor } from "class-transformer";
+import { validate, validateOrReject, ValidatorOptions } from "class-validator";
 
-export const validateDto = (dtoClass: any): RequestHandler => {
-    return async (req, res, next) => {
-        const output = plainToInstance(dtoClass, req.body);
-        const errors = await validate(output, { skipMissingProperties: false });
-        if (errors.length > 0) {
-            return res.status(400).json({ errors });
-        }
-        req.body = output;
-        return next();
-    };
-};
-
+export async function validateDto<T>(
+  dtoClass: ClassConstructor<T>,
+  payload: unknown,
+  options: ValidatorOptions = {
+    whitelist: true,
+    forbidNonWhitelisted: false,
+  }
+): Promise<T> {
+  const dto = plainToInstance(dtoClass, payload);
+  await validateOrReject(dto as object, options);
+  return dto;
+}
 
 export async function hasValidMX(email: string) {
   const domain = email.split('@')[1];

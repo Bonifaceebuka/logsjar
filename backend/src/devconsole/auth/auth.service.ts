@@ -28,7 +28,7 @@ export default class AuthService {
   }
 
   public async registerUser(req: RegisterUserDto): Promise<ServiceResponseDTO> {
-    const { email, password, last_name, first_name, terms_and_conditions } =
+    const { email, password, full_name, terms_and_conditions } =
       req;
     let whereConditions = {
       email,
@@ -69,7 +69,7 @@ export default class AuthService {
 
     const user = await this.userRepository.create({
       email,
-      full_name: `${first_name} ${last_name}`,
+      full_name,
       verification_expires_at,
       verification_token: uuid,
       password_hash: hashedPassword,
@@ -82,7 +82,7 @@ export default class AuthService {
       otp,
       verification_link,
       email,
-      first_name: capitalizeFirst(first_name),
+      first_name: capitalizeFirst(full_name),
     };
 
     await sendAccountActivationEmail(messageBody);

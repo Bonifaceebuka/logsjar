@@ -1,27 +1,26 @@
 import { Example } from 'tsoa';
-import { IsBoolean, IsEmail, IsOptional, IsString, IsStrongPassword } from "class-validator";
+import { IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString, IsStrongPassword } from "class-validator";
 
 export class RegisterUserDto {
-    @IsString({
+    @IsNotEmpty({
         message: "Email is required",
     })
     @Example("boniface.dev@logsjar.com")
 
-    @IsEmail()
+    @IsEmail({},{
+        message: "Email is invalid!",
+    })
     email!: string;
 
-    @IsString({
-        message: "Your firstname is required",
+    @IsNotEmpty({
+        message: "Your full name is required",
     })
-    @Example("boniface")
-    first_name!: string;
+    @Example("Boniface Agbo")
+    full_name!: string;
 
-    @IsString({
-        message: "Your lastname is required",
+    @IsNotEmpty({
+        message: "Password is required",
     })
-    @Example("Agbo")
-    last_name!: string;
-
     @IsStrongPassword({ minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1 }, { message: "Password should be a minimum of 8 characters, with at least 1 uppercase, 1 lowercase, 1 number and 1 special character" })
     @Example("logsjar.123@")
     password!: string;

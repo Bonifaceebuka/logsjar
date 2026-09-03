@@ -6,6 +6,7 @@ import AuthService from '@/devconsole/auth/auth.service';
 import { EmailVerificationDTO, LoginUserDto, OnlyEmailDTO, RegisterUserDto } from '@common/dtos/UserDto';
 import { logger } from '@/common/configs/logger';
 import { MESSAGES } from '@/common/constants/messages';
+import { validateDto } from '@/common/utils/validator';
  
 @Tags("Auth")
 @Route("auth")
@@ -23,6 +24,7 @@ export class AuthController extends Controller {
   public async registerUser(
     @Body() req: RegisterUserDto
   ): Promise<HttpResponseDTO> {
+    await validateDto(RegisterUserDto, req);
       const newUser = await this.authService.registerUser(req);
       if (!newUser.successful) {
         logger.info(newUser?.message);
