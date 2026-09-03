@@ -33,10 +33,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useUser } from "@clerk/nextjs";
+// import { useUser } from "@clerk/nextjs";
 
 export default function Page() {
-  const { user, isLoaded } = useUser();
+  // const { user, isLoaded } = useUser();
   const currentPlan = "free" as "free" | "starter" | "pro" | "enterprise";
   const [selectedPlan, setSelectedPlan] = React.useState<
     "free" | "starter" | "pro" | "enterprise"
@@ -184,7 +184,7 @@ export default function Page() {
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-base font-semibold capitalize">
-                      {!isLoaded ? "Loading..." : currentPlanDetails.name}
+                      {/* {!isLoaded ? "Loading..." : currentPlanDetails.name} */}
                     </span>
                     <span
                       className="text-[11px] px-2 py-0.5 rounded-full border"
@@ -483,7 +483,7 @@ export default function Page() {
                     </div>
                   </div>
                   <div className="text-sm font-semibold text-white">
-                    {user?.fullName || "Not set"}
+                    {/* {user?.fullName || "Not set"} */}
                   </div>
                 </div>
 
@@ -497,7 +497,7 @@ export default function Page() {
                     </div>
                   </div>
                   <div className="text-sm font-semibold text-white">
-                    {user?.emailAddresses[0].emailAddress || "Not available"}
+                    {/* {user?.emailAddresses[0].emailAddress || "Not available"} */}
                   </div>
                 </div>
 
@@ -511,13 +511,13 @@ export default function Page() {
                     </div>
                   </div>
                   <div className="text-sm font-semibold text-white">
-                    {user?.createdAt
+                    {/* {user?.createdAt
                       ? new Date(user.createdAt).toLocaleDateString("en-US", {
                           year: "numeric",
                           month: "long",
                           day: "numeric",
                         })
-                      : "Not available"}
+                      : "Not available"} */}
                   </div>
                 </div>
 

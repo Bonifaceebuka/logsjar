@@ -1,0 +1,56 @@
+{
+    "entryFile": "src/server.ts",
+    "noImplicitAdditionalProperties": "silently-remove-extras",
+    "controllerPathGlobs": [
+        "src/**/*.controller.ts"
+    ],
+    "spec": {
+        "outputDirectory": "src/swagger",
+        "specVersion": 3,
+        "basePath": "/",
+        "specFileBaseName": "swagger",
+        "securityDefinitions": {
+            "bearerAuth": {
+                "type": "apiKey",
+                "name": "Authorization",
+                "in": "header",
+                "description": "Enter: Bearer {your-token}"
+            }
+        },
+    "schemes": ["http", "https"],
+    "spec": {
+        "servers":[
+            {
+                "url": "https://logsjar-api.afristudylink.com",
+                "description": "Production server"
+            }, 
+            {
+                "url": "http://localhost:2026",
+                "description": "Development server"
+            }
+        ]
+    },
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ]
+    },
+    "routes": {
+        "routesDir": "src/swagger/routes",
+        "iocModule": "src/ioc.ts",
+        "authenticationModule": "src/middlewares/AppJWTMiddleware"
+    },
+     "compilerOptions": {
+        "baseUrl": "./src",
+        "paths": {
+            "@/*": ["*"],
+            "@common/*": ["common/*"],
+            "@devconsole/*": ["devconsole/*"],
+            "@media/*": ["media/*"],
+            "@middlewares/*": ["middlewares/*"],
+            "@migrations/*": ["migrations/*"],
+            "@queues/*": ["common/queues/*"]
+        }
+    }
+}

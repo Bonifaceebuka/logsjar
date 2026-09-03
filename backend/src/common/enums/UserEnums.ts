@@ -1,0 +1,19 @@
+export enum UserRoles {
+    ADMIN = "ADMIN",
+    DEVELOPER = "DEVELOPER",
+}
+
+export enum ONBOARDING_MEDIUM {
+    GITHUB = "GITHUB",
+    EMAIL_PASSWORD = "EMAIL_PASSWORD",
+    PENDING_VERIFICATION = "PENDING_VERIFICATION",
+    GOOGLE = "GOOGLE",
+}
+
+export enum AccountStatus {
+    ACTIVE = "ACTIVE",
+    INACTIVE = "INACTIVE",
+    SUSPENDED = "SUSPENDED",
+    PENDING = "PENDING",
+    BANNED = "BANNED",
+}

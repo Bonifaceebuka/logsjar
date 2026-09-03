@@ -37,13 +37,13 @@ export function DashboardSidebar({ children }: { children: React.ReactNode }) {
   // const { user, isLoaded } = useUser();
 
   const items = [
-    { label: "Overview", href: "/", Icon: Home },
-    { label: "Live Logs", href: "/live-logs", Icon: Activity },
-    { label: "Queries", href: "/queries", Icon: SearchIcon },
-    { label: "Alerts", href: "/alerts", Icon: Bell },
-    { label: "Integrations", href: "/integrations", Icon: Plug },
-    { label: "API Keys", href: "/api-keys", Icon: Key },
-    { label: "Settings", href: "/settings", Icon: SettingsIcon },
+    { label: "Overview", href: "/console/", Icon: Home },
+    { label: "Live Logs", href: "/console/live-logs", Icon: Activity },
+    { label: "Queries", href: "/console/queries", Icon: SearchIcon },
+    { label: "Alerts", href: "/console/alerts", Icon: Bell },
+    { label: "Integrations", href: "/console/integrations", Icon: Plug },
+    { label: "API Keys", href: "/console/api-keys", Icon: Key },
+    { label: "Settings", href: "/console/settings", Icon: SettingsIcon },
   ];
 
   return (

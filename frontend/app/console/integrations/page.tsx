@@ -1,12 +1,12 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import NextJs from "../../assets/frameworks/next-js.svg";
-import ExpressJs from "../../assets/frameworks/express-js.svg";
-import NestJs from "../../assets/frameworks/nest-js.png";
-import RemixJs from "../../assets/frameworks/remix-js.png";
-import Django from "../../assets/frameworks/django.svg";
-import Flask from "../../assets/frameworks/Flask.svg";
+import NextJs from "../../../assets/frameworks/next-js.svg";
+import ExpressJs from "../../../assets/frameworks/express-js.svg";
+import NestJs from "../../../assets/frameworks/nest-js.png";
+import RemixJs from "../../../assets/frameworks/remix-js.png";
+import Django from "../../../assets/frameworks/django.svg";
+import Flask from "../../../assets/frameworks/Flask.svg";
 
 const integrations = [
   {

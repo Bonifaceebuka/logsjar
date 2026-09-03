@@ -1,0 +1,17 @@
+ export enum STATUS {
+    ACTIVE = "ACTIVE",
+    INACTIVE = "INACTIVE",
+}
+
+export enum SYS_MODELS {
+    USER_MODEL= "UserModel",
+}
+
+export enum ACCESS_TOKEN_TYPES {
+    ACCESS_TOKEN = "ACCESS_TOKEN",
+    REFRESH_ACCESS_TOKEN= "REFRESH_ACCESS_TOKEN"
+}
+
+export type JWT_TYPES = 'USER_REFRESH_ACCESS_TOKEN' | 'ADMIN' | 'USER_ACCESS_TOKEN'
+
+export type JWT_EXPIRATION_TIME = "31d" | "1h" | "24h"

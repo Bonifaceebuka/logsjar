@@ -131,7 +131,7 @@ export default function Page() {
 
   React.useEffect(() => {
     // Load keys on mount: check cache first, fetch from API if cache is empty or stale
-    refreshKeys();
+    // refreshKeys();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -153,7 +153,7 @@ export default function Page() {
       setRevealOpen(true);
 
       // Force refresh to ensure cache reflects the newly created key
-      await refreshKeys({ force: true });
+      // await refreshKeys({ force: true });
       setGenerateOpen(false);
       setNewName("");
       setNewScope("Read Only");

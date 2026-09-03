@@ -1,0 +1,26 @@
+node_modules
+.DS_Store
+logs/
+*.log
+coverage/
+.idea/
+.vscode/
+combined.log
+error.log
+
+# dotenv environment variable files
+*.env
+.env
+.env.prod
+.env.development.local
+.env.test.local
+.env.production.local
+.env.production
+.env.local
+swagger
+
+# I intentionally added this to remove the email templates I have which I feel should be private to me. I may still remove it later anyways.
+# views
+# Build
+dist
+# tsoa.json
