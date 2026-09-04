@@ -17,8 +17,8 @@ export class AuthController extends Controller {
   }
 
   /**
-   * Register a new candidate
-   * @summary Register a new candidate 
+   * Register a new user
+   * @summary Register a new user 
    */
   @Post("/register")
   public async registerUser(
@@ -45,8 +45,8 @@ export class AuthController extends Controller {
   }
 
   /**
-   * Login a candidate
-   * @summary Candidate login
+   * Login a user
+   * @summary User login
    */
   @Post("/login")
   public async login(@Body() req: LoginUserDto)
@@ -74,8 +74,8 @@ export class AuthController extends Controller {
   }
 
   /**
-   * Verify email of a candidate after account creation
-   * @summary Verify email of a candidate after account creation
+   * Verify email of a user after account creation
+   * @summary Verify email of a user after account creation
    */
   @Put("/email/verification/:verification_token")
   public async verifyEmail(
@@ -109,8 +109,8 @@ export class AuthController extends Controller {
   }
 
   /**
-   * Google login a candidate
-   * @summary Google login a candidate
+   * Google login a user
+   * @summary Google login a user
    */
   @Post("/socials/google")
   public async loginWithGoogle(
