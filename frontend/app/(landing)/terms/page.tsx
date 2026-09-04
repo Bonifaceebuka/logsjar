@@ -1,6 +1,6 @@
 import React from 'react'
 import { LandingHeader, LandingFooter } from "@/components/landing"
-import { makePageMetadata } from "@/lib/seo"
+import { makePageMetadata } from '@/lib/seo';
 
 export const metadata = makePageMetadata({
   title: "Terms of Service",
