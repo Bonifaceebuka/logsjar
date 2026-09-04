@@ -1,7 +1,7 @@
 import { Column, Entity } from "typeorm";
-import { BaseModel } from "@/common/baseModel";
+import { BaseModel } from "../../../common/baseModel";
 import { Service } from "typedi";
-import { ACCESS_TOKEN_TYPES, SYS_MODELS } from "@/common/enums";
+import { ACCESS_TOKEN_TYPES, SYS_MODELS } from "../../../common/enums";
 
 @Service()
 @Entity({ name: "access_tokens" })
