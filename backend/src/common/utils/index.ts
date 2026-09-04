@@ -3,9 +3,9 @@ import { CONFIGS } from "../configs";
 import moment from 'moment';
 import { v4 as uuidv4 } from 'uuid';
 import jwt from "jsonwebtoken"
-import { AppError } from "../errors/AppError";
+import { AppError } from "../errors/appError";
 import crypto from "crypto";
-import { JWT_EXPIRATION_TIME, JWT_TYPES } from "../enums/IndexEnum";
+import { JWT_EXPIRATION_TIME, JWT_TYPES } from "../enums";
 
 export function capitalizeFirst(str: string) {
   if (!str) return "";

@@ -1,14 +1,14 @@
 import jwt from "jsonwebtoken";
 import { CONFIGS } from "../common/configs";
 import { logger } from "../common/configs/logger";
-import { AppError } from "../common/errors/AppError";
+import { AppError } from "../common/errors/appError";
 import { UserRepository } from "@/devconsole/users/repositories/user.repository";
 
 import { dynamic_messages } from "@/common/constants/messages";
-import { AccountStatus } from "@/common/enums/UserEnums";
+import { AccountStatus } from "@/common/enums/user.enums";
 import { AccessTokenRepository } from "@/devconsole/auth/repositories/accessToken.repository";
 
-import { ACCESS_TOKEN_TYPES, SYS_MODELS } from "@/common/enums/IndexEnum";
+import { ACCESS_TOKEN_TYPES, SYS_MODELS } from "@/common/enums";
 import { MoreThan } from "typeorm";
 export function expressAuthentication(req: any, securityName: string, scopes?: string[]): Promise<any> {
     return new Promise((resolve, reject) => {

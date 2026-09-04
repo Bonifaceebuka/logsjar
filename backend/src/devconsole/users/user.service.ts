@@ -1,8 +1,8 @@
 import { Service } from "typedi";
 import { logger } from "../../common/configs/logger";
-import { AppError } from "../../common/errors/AppError";
+import { AppError } from "../../common/errors/appError";
 import { UserRepository } from "./repositories/user.repository";
-import { ServiceResponseDTO } from "../../common/types/HttpType";
+import { ServiceResponseDTO } from "../../common/types/http.type";
 import { dynamic_messages, MESSAGES } from "../../common/constants/messages";
 
 @Service()

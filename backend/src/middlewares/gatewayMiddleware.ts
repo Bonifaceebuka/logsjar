@@ -1,6 +1,6 @@
 import { Response, NextFunction } from "express";
-import { verifySignature } from "../common/utils/security";
-import { AppError } from "../common/errors/AppError";
+import { verifySignature } from "../common/utils/security.util";
+import { AppError } from "../common/errors/appError";
 import { CONFIGS } from "../common/configs";
 import { logger } from "../common/configs/logger";
 

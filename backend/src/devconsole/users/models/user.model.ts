@@ -1,6 +1,6 @@
 import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne } from "typeorm";
-import { BaseModel } from "@common/BaseModel";
-import { AccountStatus, ONBOARDING_MEDIUM } from "@common/enums/UserEnums";
+import { BaseModel } from "@/common/baseModel";
+import { AccountStatus, ONBOARDING_MEDIUM } from "@/common/enums/user.enums";
 import { UploadModel } from "@/media/models/upload.model";
 
 @Entity({ name: "users" })

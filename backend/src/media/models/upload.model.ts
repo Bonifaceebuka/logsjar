@@ -1,6 +1,6 @@
 import { Entity, Column, Index, OneToOne} from "typeorm";
-import { BaseModel } from "../../common/BaseModel";
-import { FILE_HOST_PROVIDER } from "../../common/enums/UploadEnum";
+import { BaseModel } from "../../common/baseModel";
+import { FILE_HOST_PROVIDER } from "../../common/enums/upload.enum";
 // import UserModel from "./UserModel";
 
 @Entity({ name: "uploads" })

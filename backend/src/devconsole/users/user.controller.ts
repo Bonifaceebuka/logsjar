@@ -1,7 +1,7 @@
 import { Service } from 'typedi';
 import { Tags, Route, Controller, Post, Body, Put, Get, Security, Query, Path, Request } from 'tsoa';
-import { HttpResponseDTO } from '../../common/types/HttpType';
-import { errorResponse, successResponse } from '@/common/utils/responseHandlers';
+import { HttpResponseDTO } from '../../common/types/http.type';
+import { errorResponse, successResponse } from '@/common/utils/httpResponse.util';
 import { logger } from '@/common/configs/logger';
 import UserService from '@/devconsole/users/user.service';
  

@@ -1,5 +1,5 @@
 import { Worker } from 'bullmq';
-import { sendEmail } from '@common/utils/mailing';
+import { sendEmail } from '@/common/utils/mailing.util';
 import { getRedisWorkerClient } from '@common/configs/redis';
 
 interface EmailJobData {

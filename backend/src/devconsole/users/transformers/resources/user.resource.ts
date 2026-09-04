@@ -1,4 +1,4 @@
-import UserModel from "@models/UserModel";
+import UserModel from "@/devconsole/users/models/user.model";
 
 export class UserResource {
   static userToJSON(user: UserModel) {

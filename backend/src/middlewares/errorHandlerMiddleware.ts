@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import { ValidateError } from "tsoa";
-import { AppError } from "../common/errors/AppError";
+import { AppError } from "../common/errors/appError";
 import { logger } from "../common/configs/logger";
 
 export const errorHandlerMiddlware = (err: any, req: Request, res: Response, next: NextFunction) =>{

@@ -1,12 +1,12 @@
 import { Service } from 'typedi';
 import { Tags, Route, Controller, Post, Body, Put, Get, Security, Query, Path, Request } from 'tsoa';
-import { HttpResponseDTO } from '@common/types/HttpType';
-import { errorResponse, successResponse } from '@/common/utils/responseHandlers';
+import { HttpResponseDTO } from '@/common/types/http.type';
+import { errorResponse, successResponse } from '@/common/utils/httpResponse.util';
 import AuthService from '@/devconsole/auth/auth.service';
-import { EmailVerificationDTO, LoginUserDto, OnlyEmailDTO, RegisterUserDto } from '@common/dtos/UserDto';
+import { EmailVerificationDTO, LoginUserDto, OnlyEmailDTO, RegisterUserDto } from '@/common/dtos/user.dto';
 import { logger } from '@/common/configs/logger';
 import { MESSAGES } from '@/common/constants/messages';
-import { validateDto } from '@/common/utils/validator';
+import { validateDto } from '@/common/utils/validator.util';
  
 @Tags("Auth")
 @Route("auth")

@@ -1,5 +1,5 @@
 import { DataSource } from "typeorm";
-import { BaseRepository } from "@common/BaseRepository";
+import { BaseRepository } from "@/common/base.repository";
 import { dataSource as AppDataSource } from "@common/configs/postgres";
 import { AccessTokenModel } from "@/devconsole/auth/models/accessToken.model";
 

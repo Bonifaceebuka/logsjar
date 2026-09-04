@@ -1,22 +1,22 @@
 import { Service } from "typedi";
 import { logger } from "../../common/configs/logger";
-import { AppError } from "../../common/errors/AppError";
+import { AppError } from "../../common/errors/appError";
 import { UserRepository } from "../users/repositories/user.repository";
 import { CONFIGS } from "../../common/configs";
-import { ServiceResponseDTO } from "../../common/types/HttpType";
+import { ServiceResponseDTO } from "../../common/types/http.type";
 import { capitalizeFirst, compareHash, decrypt, encrypt, generateJWT, generateOTP, generateUUID, hasExpired, hashString } from "../../common/utils";
-import { EmailVerificationDTO, LoginUserDto, OnlyEmailDTO, RegisterUserDto } from "../../common/dtos/UserDto";
-import { AccountStatus, ONBOARDING_MEDIUM } from "../../common/enums/UserEnums";
+import { EmailVerificationDTO, LoginUserDto, OnlyEmailDTO, RegisterUserDto } from "../../common/dtos/user.dto";
+import { AccountStatus, ONBOARDING_MEDIUM } from "../../common/enums/user.enums";
 import { dynamic_messages, MESSAGES } from "../../common/constants/messages";
-import { makeApiCall } from "@/common/utils/axios";
+import { makeApiCall } from "@/common/utils/axios.util";
 import {
   sendAccountActivationEmail,
   sendWelcomeEmail,
-} from "../../common/queues/producers/EmailProducer";
-import { hasValidMX } from "@/common/utils/validator";
+} from "../../common/queues/producers/email.producer";
+import { hasValidMX } from "@/common/utils/validator.util";
 import { AccessTokenRepository } from "@/devconsole/auth/repositories/accessToken.repository";
 import { LessThan, MoreThan } from "typeorm";
-import { ACCESS_TOKEN_TYPES, SYS_MODELS } from "@/common/enums/IndexEnum";
+import { ACCESS_TOKEN_TYPES, SYS_MODELS } from "@/common/enums";
 import jwt from "jsonwebtoken";
 
 @Service()

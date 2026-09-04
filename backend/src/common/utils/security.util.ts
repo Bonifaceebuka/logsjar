@@ -1,5 +1,5 @@
 import {  MESSAGES } from '../constants/messages';
-import { AppError } from '../errors/AppError';
+import { AppError } from '../errors/appError';
 import { CONFIGS } from '../configs/index';
 import crypto from "crypto";
 import { logger } from '../configs/logger';

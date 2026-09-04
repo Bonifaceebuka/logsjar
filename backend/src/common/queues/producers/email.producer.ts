@@ -1,6 +1,6 @@
 import { CONFIGS } from "../../configs";
 import { logger } from "../../configs/logger";
-import { emailQueue } from "../Queues";
+import { emailQueue } from "../queues";
 
 export const sendAccountActivationEmail = async (emailData: any) => {
   try {
