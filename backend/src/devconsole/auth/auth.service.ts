@@ -419,82 +419,184 @@ export default class AuthService {
 
     const authData = decoded?.jwtData
     if (
-        !authData ||
-        authData.ACCESS_TOKEN_TYPE !== ACCESS_TOKEN_TYPES.REFRESH_ACCESS_TOKEN
-      ) {
-        throw new AppError("Invalid token!", 403);
-      }
+      !authData ||
+      authData.ACCESS_TOKEN_TYPE !== ACCESS_TOKEN_TYPES.REFRESH_ACCESS_TOKEN
+    ) {
+      throw new AppError("Invalid token!", 403);
+    }
 
-      const userRepository = new UserRepository();
-      const existingUser = await userRepository.getRepo().findOne({
-        where : {
-          uuid: authData?.uuid
+    const userRepository = new UserRepository();
+    const existingUser = await userRepository.getRepo().findOne({
+      where: {
+        uuid: authData?.uuid
+      },
+      select: [
+        'email',
+        'uuid',
+        'id',
+      ]
+    });
+
+    if (!existingUser) {
+      const message = dynamic_messages.NOT_FOUND("User");
+      logger.info(message)
+      throw new AppError(message);
+    }
+
+    const accessTokenRepository = new AccessTokenRepository();
+    const foundToken = await accessTokenRepository.getRepo().findOne({
+      where: {
+        expires_at: MoreThan(new Date()),
+        token,
+        accessable_id: existingUser.id,
+        accessable_to: SYS_MODELS.USER_MODEL
+      },
+    });
+
+    if (!foundToken) {
+      const message = "User token has expired!";
+      logger.info(message)
+      throw new AppError("Unauthorized access!", 401);
+    }
+    else {
+      const expires_in = '31d'
+      const accessToken = generateJWT(
+        {
+          email: existingUser.email,
+          user_id: existingUser.id,
+          uuid: existingUser.uuid,
+          ACCESS_TOKEN_TYPE: ACCESS_TOKEN_TYPES.ACCESS_TOKEN
         },
-        select: [
-          'email',
-          'uuid',
-          'id',
-        ]
-      });
+        "USER_ACCESS_TOKEN",
+        expires_in
+      );
 
-      if (!existingUser) {
-        const message = dynamic_messages.NOT_FOUND("User");
-        logger.info(message)
-        throw new AppError(message);
-      }
-
-      const accessTokenRepository = new AccessTokenRepository();
-      const foundToken = await accessTokenRepository.getRepo().findOne({
-        where: {
-          expires_at: MoreThan(new Date()),
-          token,
-          accessable_id: existingUser.id,
-          accessable_to: SYS_MODELS.USER_MODEL
+      const refreshAccessToken = generateJWT(
+        {
+          email: existingUser.email,
+          user_id: existingUser.id,
+          uuid: existingUser.uuid,
+          ACCESS_TOKEN_TYPE: ACCESS_TOKEN_TYPES.REFRESH_ACCESS_TOKEN
         },
-      });
+        "USER_REFRESH_ACCESS_TOKEN",
+        expires_in
+      );
 
-      if (!foundToken) {
-        const message = "User token has expired!";
-        logger.info(message)
-        throw new AppError("Unauthorized access!", 401);
+      logger.debug(MESSAGES.AUTH.LOGIN.JWT_GENERATED);
+
+      await this.setAuthToken(refreshAccessToken, existingUser.id, SYS_MODELS.USER_MODEL, expires_in)
+
+      return {
+        successful: true,
+        data: {
+          user: existingUser,
+          token: accessToken,
+          refresh_accesss_token: refreshAccessToken,
+        },
+        message: MESSAGES.AUTH.LOGIN.LOGIN_SUCCESSFUL,
+      };
+    }
+  }
+
+  public async loginWithGitHub(): Promise<ServiceResponseDTO> {
+    const params = new URLSearchParams({
+      client_id: CONFIGS.GITHUB.CLIENT_ID!,
+      redirect_uri: CONFIGS.GITHUB.CALLBACK_URL!,
+      scope: "read:user user:email",
+    });
+
+    const githubUrl =
+      `https://github.com/login/oauth/authorize?${params.toString()}`;
+    
+    return {
+      successful: true,
+      data: {
+        githubUrl
+      },
+      message: "Github Oauth URL computed successfully!",
+    };
+
+  }
+
+  public async verifyWithGitHubCallback(req: any): Promise<ServiceResponseDTO> {
+    if(!req?.query?.code){
+      throw new AppError("Code is not found!", 404);
+    }
+  
+    const response = await makeApiCall(
+      "https://github.com/login/oauth/access_token",
+      {
+        method: "POST",
+        data:{
+          client_id: CONFIGS.GITHUB.CLIENT_ID,
+          client_secret: CONFIGS.GITHUB.CLIENT_SECRET,
+          code: req?.query?.code,
+          redirect_uri: CONFIGS.GITHUB.CALLBACK_URL,
+        },
+        headers: {
+          Accept: "application/json",
+        },
       }
-      else {
-        const expires_in = '31d'
-        const accessToken = generateJWT(
-          {
-            email: existingUser.email,
-            user_id: existingUser.id,
-            uuid: existingUser.uuid,
-            ACCESS_TOKEN_TYPE: ACCESS_TOKEN_TYPES.ACCESS_TOKEN
-          },
-          "USER_ACCESS_TOKEN",
-          expires_in
-        );
+    );
 
-        const refreshAccessToken = generateJWT(
-          {
-            email: existingUser.email,
-            user_id: existingUser.id,
-            uuid: existingUser.uuid,
-            ACCESS_TOKEN_TYPE: ACCESS_TOKEN_TYPES.REFRESH_ACCESS_TOKEN
-          },
-          "USER_REFRESH_ACCESS_TOKEN",
-          expires_in
-        );
+    if(!response?.access_token){
+      throw new AppError("Github access token is not found!", 404);
+    }
 
-        logger.debug(MESSAGES.AUTH.LOGIN.JWT_GENERATED);
+    const accessToken = response?.access_token;
 
-        await this.setAuthToken(refreshAccessToken, existingUser.id, SYS_MODELS.USER_MODEL, expires_in)
-
-        return {
-          successful: true,
-          data: {
-            user: existingUser,
-            token: accessToken,
-            refresh_accesss_token: refreshAccessToken,
-          },
-          message: MESSAGES.AUTH.LOGIN.LOGIN_SUCCESSFUL,
-        };
+    const gitHubUserResponse = await makeApiCall(
+      "https://api.github.com/user",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Accept: "application/vnd.github+json",
+        },
       }
+    );
+
+    if(!gitHubUserResponse?.email){
+      const gitHubUserEmailsRes = await makeApiCall(
+      "https://api.github.com/user/emails",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          Accept: "application/vnd.github+json",
+        },
+      }
+    );
+
+    const githubUserEmails = gitHubUserEmailsRes.find((email: any) => email.primary && email.verified);
+    if(!githubUserEmails){
+      throw new AppError("Github email is not found!", 404);
+    }
+
+    gitHubUserResponse.email = githubUserEmails.email;
+    }
+
+    const user = await this.userRepository.create({
+      email: gitHubUserResponse?.email,
+      picture: gitHubUserResponse?.avatar_url ,
+      full_name: gitHubUserResponse?.name,
+      social_account_id: gitHubUserResponse?.id,
+      user_status: AccountStatus.ACTIVE,
+      is_verified: true,
+      mode_of_sign_up: ONBOARDING_MEDIUM.GITHUB,
+      terms_and_conditions: true,
+    });
+
+    const [first_name, last_name] = gitHubUserResponse?.name.split(" ");
+    const messageBody = {
+      email: gitHubUserResponse?.email,
+      first_name: capitalizeFirst(first_name as string),
+    };
+    await sendWelcomeEmail(messageBody);
+
+    return {
+      successful: true,
+      data: {githubUrl: CONFIGS.GITHUB.FRONTEND_URL},
+      message: "Github Oauth completed successfully!",
+    };
+
   }
 }

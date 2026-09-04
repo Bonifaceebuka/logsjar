@@ -27,6 +27,10 @@ enum EnvironmentKeys {
     MAIL_PROVIDER = 'MAIL_PROVIDER',
     MAIL_SECURE = 'MAIL_SECURE',
     MAIL_PORT = 'MAIL_PORT',
+    GITHUB_CLIENT_ID = 'GITHUB_CLIENT_ID',
+    GITHUB_CLIENT_SECRET = 'GITHUB_CLIENT_SECRET',
+    GITHUB_CALLBACK_URL = 'GITHUB_CALLBACK_URL',
+    FRONTEND_URL = 'FRONTEND_URL',
 }
 
 export function getEnv(key: EnvironmentKeys): string {
@@ -96,4 +100,10 @@ export const CONFIGS ={
         MAIL_PROVIDER: getEnv(EnvironmentKeys.MAIL_PROVIDER),
         MAIL_SECURE: getEnv(EnvironmentKeys.MAIL_SECURE) || false
     },
+    GITHUB:{
+        CLIENT_ID: getEnv(EnvironmentKeys.GITHUB_CLIENT_ID),
+        CLIENT_SECRET: getEnv(EnvironmentKeys.GITHUB_CLIENT_SECRET),
+        CALLBACK_URL: getEnv(EnvironmentKeys.GITHUB_CALLBACK_URL),
+        FRONTEND_URL: getEnv(EnvironmentKeys.FRONTEND_URL),
+    }
 }

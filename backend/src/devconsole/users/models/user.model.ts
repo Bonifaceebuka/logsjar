@@ -58,6 +58,9 @@ export default class UserModel extends BaseModel {
     })
     mode_of_sign_up!: ONBOARDING_MEDIUM;
 
+    @Column({ nullable: true })
+    social_account_id?: string;
+
   // @OneToOne(() => UploadModel, (upload) => upload.user_avatar, {
   //   onDelete: "CASCADE",
   // })
