@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import Logo from "../common/logo";
+import Logo from "@/components/common/logo";
 import { useClerk, useUser } from "@clerk/nextjs";
 
 export function LandingHeader() {
