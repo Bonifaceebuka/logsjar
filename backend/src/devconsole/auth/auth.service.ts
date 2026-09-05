@@ -165,14 +165,23 @@ export default class AuthService {
   }
 
   public async loginWithGoogle(token: string): Promise<ServiceResponseDTO> {
-    const data = await makeApiCall(
-      `https://oauth2.googleapis.com/tokeninfo?id_token=${token}`,
+    let data;
+    try{
+       data = await makeApiCall(
+      "https://www.googleapis.com/oauth2/v3/userinfo",
       {
         method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
+    }
+    catch(err){
+      throw new AppError("Something went wrong")
+    }
     let user;
-    if (data && data?.email && data?.email_verified === 'true') {
+    if (data && data?.email && data?.email_verified === true) {
       user = await this.userRepository.findOneAndRelations({
         where: { email: data?.email },
       });
@@ -227,14 +236,12 @@ export default class AuthService {
 
       await this.setAuthToken(refreshAccessToken, user.id, SYS_MODELS.USER_MODEL, expires_in)
 
-      console.log({ accessToken })
-      console.log({ refreshAccessToken })
-
       return {
         successful: true,
         data: {
           user,
           token: accessToken,
+          dashboardUrl: `${CONFIGS.GITHUB.FRONTEND_URL}/console`,
           refresh_accesss_token: refreshAccessToken,
         },
         message: MESSAGES.AUTH.LOGIN.LOGIN_SUCCESSFUL,
@@ -574,27 +581,68 @@ export default class AuthService {
     gitHubUserResponse.email = githubUserEmails.email;
     }
 
-    const user = await this.userRepository.create({
+    let user = await this.userRepository.basicFindOneByConditions({
       email: gitHubUserResponse?.email,
-      picture: gitHubUserResponse?.avatar_url ,
-      full_name: gitHubUserResponse?.name,
-      social_account_id: gitHubUserResponse?.id,
-      user_status: AccountStatus.ACTIVE,
-      is_verified: true,
-      mode_of_sign_up: ONBOARDING_MEDIUM.GITHUB,
-      terms_and_conditions: true,
     });
+      
+    if (!user) {
+      const message = dynamic_messages.NOT_FOUND("User's email");
+      logger.info(message);
+        
+      user = await this.userRepository.create({
+        email: gitHubUserResponse?.email, 
+        picture: gitHubUserResponse?.avatar_url ,
+        full_name: gitHubUserResponse?.name,
+        social_account_id: gitHubUserResponse?.id,
+        user_status: AccountStatus.ACTIVE,
+        is_verified: true,
+        mode_of_sign_up: ONBOARDING_MEDIUM.GITHUB,
+        terms_and_conditions: true,
+      });
 
-    const [first_name, last_name] = gitHubUserResponse?.name.split(" ");
-    const messageBody = {
-      email: gitHubUserResponse?.email,
-      first_name: capitalizeFirst(first_name as string),
-    };
-    await sendWelcomeEmail(messageBody);
+      const [first_name, last_name] = gitHubUserResponse?.name.split(" ");
+      const messageBody = {
+        email: gitHubUserResponse?.email,
+        first_name: capitalizeFirst(first_name as string),
+      };
+      await sendWelcomeEmail(messageBody);
+    }
+
+    const accessTokenJWT = generateJWT(
+        {
+          email: user.email,
+          user_id: user.id,
+          uuid: user.uuid,
+          ACCESS_TOKEN_TYPE: ACCESS_TOKEN_TYPES.ACCESS_TOKEN
+        },
+        "USER_ACCESS_TOKEN",
+        "31d"
+      );
+
+      const expires_in = '31d'
+      const refreshAccessToken = generateJWT(
+        {
+          email: user.email,
+          user_id: user.id,
+          uuid: user.uuid,
+          ACCESS_TOKEN_TYPE: ACCESS_TOKEN_TYPES.REFRESH_ACCESS_TOKEN
+        },
+        "USER_REFRESH_ACCESS_TOKEN",
+        expires_in
+      );
+
+      logger.debug(MESSAGES.AUTH.LOGIN.JWT_GENERATED);
+
+      await this.setAuthToken(refreshAccessToken, user.id, SYS_MODELS.USER_MODEL, expires_in)
 
     return {
       successful: true,
-      data: {githubUrl: CONFIGS.GITHUB.FRONTEND_URL},
+      data: {
+        githubUrl: `${CONFIGS.GITHUB.FRONTEND_URL}/console`,
+        user,
+          token: accessTokenJWT,
+          refresh_accesss_token: refreshAccessToken,
+      },
       message: "Github Oauth completed successfully!",
     };
 

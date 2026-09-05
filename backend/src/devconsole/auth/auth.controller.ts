@@ -7,6 +7,7 @@ import { EmailVerificationDTO, LoginUserDto, OnlyEmailDTO, RegisterUserDto } fro
 import { logger } from '@/common/configs/logger';
 import { MESSAGES } from '@/common/constants/messages';
 import { validateDto } from '@/common/utils/validator.util';
+import { CONFIGS } from '@/common/configs';
 
 @Tags("Auth")
 @Route("auth")
@@ -114,10 +115,13 @@ export class AuthController extends Controller {
    */
   @Post("/socials/google")
   public async loginWithGoogle(
-    @Body() reqBody: { token: string }
+    @Body() reqBody: { token: string },
+    @Request() req: any
   ): Promise<HttpResponseDTO> {
     const authUser = await this.authService.loginWithGoogle(reqBody.token);
     const { message, data } = authUser;
+    const res = req.res;
+    
     logger.info(message);
     if (!authUser?.successful) {
       this.setStatus(400);
@@ -126,6 +130,20 @@ export class AuthController extends Controller {
       });
     } else {
       this.setStatus(200);
+       res.cookie("access_token", data?.token, {
+        httpOnly: true,
+        secure: CONFIGS.IS_PRODUCTION,
+        sameSite: "lax",
+        maxAge: 15 * 60 * 1000,
+      });
+
+      res.cookie("refresh_token", data?.refresh_accesss_token, {
+        httpOnly: true,
+        secure: CONFIGS.IS_PRODUCTION,
+        sameSite: "lax",
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+      });
+
       return successResponse({
         message: MESSAGES.AUTH.LOGIN.LOGIN_SUCCESSFUL,
         data,
@@ -209,8 +227,6 @@ export class AuthController extends Controller {
       });
     } else {
       this.setStatus(200);
-    console.log(data?.githubUrl)
-
       res.redirect(data?.githubUrl);
     }
   }
@@ -235,7 +251,22 @@ export class AuthController extends Controller {
       });
     } else {
       this.setStatus(200);
+      res.cookie("access_token", data?.token, {
+        httpOnly: true,
+        secure: CONFIGS.IS_PRODUCTION,
+        sameSite: "lax",
+        maxAge: 15 * 60 * 1000,
+      });
+
+      res.cookie("refresh_token", data?.refresh_accesss_token, {
+        httpOnly: true,
+        secure: CONFIGS.IS_PRODUCTION,
+        sameSite: "lax",
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+      });
+
       res.redirect(data?.githubUrl);
+
     }
   }
 }

@@ -10,7 +10,7 @@ import {
   LandingPricing,
   LandingCTA,
   LandingFooter,
-} from "@/components/landing";
+} from "@/landing/components";
 
 export default function LandingPage() {
   return (
