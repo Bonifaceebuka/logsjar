@@ -16,7 +16,7 @@ import {
 import { hasValidMX } from "@/common/utils/validator.util";
 import { AccessTokenRepository } from "@/devconsole/auth/repositories/accessToken.repository";
 import { LessThan, MoreThan } from "typeorm";
-import { ACCESS_TOKEN_TYPES, SYS_MODELS } from "@/common/enums";
+import { ACCESS_TOKEN_TYPES, JWT_EXPIRATION_TIME, SYS_MODELS } from "@/common/enums";
 import jwt from "jsonwebtoken";
 
 @Service()
@@ -217,10 +217,10 @@ export default class AuthService {
           ACCESS_TOKEN_TYPE: ACCESS_TOKEN_TYPES.ACCESS_TOKEN
         },
         "USER_ACCESS_TOKEN",
-        "31d"
+        "30m"
       );
 
-      const expires_in = '31d'
+      const expires_in = '1h'
       const refreshAccessToken = generateJWT(
         {
           email: user.email,
@@ -241,6 +241,8 @@ export default class AuthService {
         data: {
           user,
           token: accessToken,
+          token_expires_at: 30 * 60 * 1000,
+          refresh_token_expires_at: 1 * 60 * 60 * 1000,
           dashboardUrl: `${CONFIGS.GITHUB.FRONTEND_URL}/console`,
           refresh_accesss_token: refreshAccessToken,
         },
@@ -375,7 +377,7 @@ export default class AuthService {
     return { successful: true, data: null, message };
   }
 
-  public async setAuthToken(token: string, user_id: number, accessable_type: SYS_MODELS, expires_in: "31d" | "1h" | "24h"): Promise<void> {
+  public async setAuthToken(token: string, user_id: number, accessable_type: SYS_MODELS, expires_in: JWT_EXPIRATION_TIME): Promise<void> {
     if (!token || !user_id) {
       throw new AppError("Token or user is not found!", 404);
     }
@@ -466,7 +468,6 @@ export default class AuthService {
       throw new AppError("Unauthorized access!", 401);
     }
     else {
-      const expires_in = '31d'
       const accessToken = generateJWT(
         {
           email: existingUser.email,
@@ -475,7 +476,7 @@ export default class AuthService {
           ACCESS_TOKEN_TYPE: ACCESS_TOKEN_TYPES.ACCESS_TOKEN
         },
         "USER_ACCESS_TOKEN",
-        expires_in
+        "1w"
       );
 
       const refreshAccessToken = generateJWT(
@@ -486,18 +487,20 @@ export default class AuthService {
           ACCESS_TOKEN_TYPE: ACCESS_TOKEN_TYPES.REFRESH_ACCESS_TOKEN
         },
         "USER_REFRESH_ACCESS_TOKEN",
-        expires_in
+        "31d"
       );
 
       logger.debug(MESSAGES.AUTH.LOGIN.JWT_GENERATED);
 
-      await this.setAuthToken(refreshAccessToken, existingUser.id, SYS_MODELS.USER_MODEL, expires_in)
+      await this.setAuthToken(refreshAccessToken, existingUser.id, SYS_MODELS.USER_MODEL, "31d")
 
       return {
         successful: true,
         data: {
           user: existingUser,
           token: accessToken,
+          token_expires_at: 7 * 24 * 60 * 60 * 1000,
+          refresh_token_expires_at: 31 * 24 * 60 * 60 * 1000,
           refresh_accesss_token: refreshAccessToken,
         },
         message: MESSAGES.AUTH.LOGIN.LOGIN_SUCCESSFUL,

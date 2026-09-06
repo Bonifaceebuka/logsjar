@@ -14,4 +14,4 @@ export enum ACCESS_TOKEN_TYPES {
 
 export type JWT_TYPES = 'USER_REFRESH_ACCESS_TOKEN' | 'ADMIN' | 'USER_ACCESS_TOKEN'
 
-export type JWT_EXPIRATION_TIME = "31d" | "1h" | "24h"
+export type JWT_EXPIRATION_TIME = "31d" | "1h" | "24h" | "30m" | "1w"

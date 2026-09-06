@@ -134,14 +134,14 @@ export class AuthController extends Controller {
         httpOnly: true,
         secure: CONFIGS.IS_PRODUCTION,
         sameSite: "lax",
-        maxAge: 15 * 60 * 1000,
+        maxAge: data?.token_expires_at,
       });
 
       res.cookie("refresh_token", data?.refresh_accesss_token, {
         httpOnly: true,
         secure: CONFIGS.IS_PRODUCTION,
         sameSite: "lax",
-        maxAge: 30 * 24 * 60 * 60 * 1000,
+        maxAge: data?.refresh_token_expires_at,
       });
 
       return successResponse({
@@ -185,8 +185,10 @@ export class AuthController extends Controller {
   */
   @Put("/refresh-token")
   public async refreshAccessToken(
-    @Body() reqBody: { refresh_token: string }
+    @Body() reqBody: { refresh_token: string },
+    @Request() req: any
   ): Promise<HttpResponseDTO> {
+    const res = req.res;
     const refreshAccessToken = await this.authService.refreshAccessToken(
       reqBody.refresh_token
     );
@@ -201,6 +203,20 @@ export class AuthController extends Controller {
 
     logger.info(refreshAccessToken?.message);
     this.setStatus(200);
+    res.cookie("access_token", refreshAccessToken?.data?.token, {
+        httpOnly: true,
+        secure: CONFIGS.IS_PRODUCTION,
+        sameSite: "lax",
+        maxAge: refreshAccessToken?.data?.token_expires_at,
+      });
+
+      res.cookie("refresh_token", refreshAccessToken?.data?.refresh_accesss_token, {
+        httpOnly: true,
+        secure: CONFIGS.IS_PRODUCTION,
+        sameSite: "lax",
+        maxAge: refreshAccessToken?.data?.refresh_token_expires_at,
+      });
+      
     return successResponse({
       message: MESSAGES.AUTH.LOGIN.LOGIN_SUCCESSFUL,
       status_code: 200,
