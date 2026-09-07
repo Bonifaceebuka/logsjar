@@ -1,0 +1,9 @@
+{
+  "name": "logsjar",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "packages/*"
+  ]
+}
