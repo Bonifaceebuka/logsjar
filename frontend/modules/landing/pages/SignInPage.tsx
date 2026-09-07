@@ -1,6 +1,6 @@
 "use client"
 
-import AuthLayout from "@/landing/components/AuthLayout";
+import AuthLayout from "@/modules/landing/components/AuthLayout";
 import Link from "next/link";
 import {
   ArrowLeft,

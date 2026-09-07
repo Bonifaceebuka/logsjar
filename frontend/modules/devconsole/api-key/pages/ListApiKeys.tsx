@@ -24,7 +24,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import NewApiKeyDialog from "@/devconsole/api-key/components/NewApiKeyDialog";
+import NewApiKeyDialog from "@/modules/devconsole/api-key/components/NewApiKeyDialog";
 
 type KeyRow = {
   name: string;

@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "@/components/common/logo";
+import Logo from "@/components/ui/logo";
 import Link from "next/link";
 import {
   Tooltip,

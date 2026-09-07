@@ -1,4 +1,4 @@
-import ListApiKeys from "@/devconsole/api-key/pages/ListApiKeys";
+import ListApiKeys from "@/modules/devconsole/api-key/pages/ListApiKeys";
 
 export default function Page() {
   return (
