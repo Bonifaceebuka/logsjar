@@ -5,7 +5,7 @@
   "description": "Logsjar RESTful API service",
   "main": "dist/server.js",
   "engines": {
-    "node": "20.x"
+    "node": "22.x"
   },
   "scripts": {
     "test": "jest",
