@@ -1,9 +1,6 @@
 {
   "name": "logsjar",
   "private": true,
-  "engines": {
-    "node": "22.x"
-  },
   "workspaces": [
     "frontend",
     "backend",
