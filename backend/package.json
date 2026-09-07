@@ -4,6 +4,9 @@
   "author": "Agbo Boniface Ebuka",
   "description": "Logsjar RESTful API service",
   "main": "dist/server.js",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "test": "jest",
     "start": "node ./dist/server.js",
