@@ -16,15 +16,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-          <TooltipProvider>
-            <DashboardSidebar>
-              <SidebarInset>
-                <TopBar />
-                <div className="py-4 pr-4">
-                  <div className="mx-auto max-w-7xl">{children}</div>
-                </div>
-              </SidebarInset>
-            </DashboardSidebar>
-          </TooltipProvider>
+    <TooltipProvider>
+      <DashboardSidebar>
+        <SidebarInset>
+          <TopBar />
+          <div className="py-4 pr-4">
+            <div className="mx-auto max-w-7xl">{children}</div>
+          </div>
+        </SidebarInset>
+      </DashboardSidebar>
+    </TooltipProvider>
   );
 }
