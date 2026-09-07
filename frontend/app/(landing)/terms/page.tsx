@@ -1,5 +1,5 @@
 import React from 'react'
-import { LandingHeader, LandingFooter } from "@/components/landing"
+import { LandingHeader, LandingFooter } from "@/landing/components"
 import { makePageMetadata } from '@/lib/seo';
 
 export const metadata = makePageMetadata({
