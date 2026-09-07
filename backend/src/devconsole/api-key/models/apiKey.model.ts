@@ -1,7 +1,7 @@
 import { Column, Entity } from "typeorm";
 import { BaseModel } from "../../../common/baseModel";
 import { Service } from "typedi";
-import { API_KEY_ENVIRONMENTS } from "../enums/api-key.enums";
+import { API_KEY_ENVIRONMENTS } from "@logsjar/shared";
 
 @Service()
 @Entity({ name: "api_keys" })

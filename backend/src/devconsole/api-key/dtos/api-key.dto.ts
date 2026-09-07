@@ -1,6 +1,6 @@
 import { IsNotEmpty } from "class-validator";
 import { Example } from "tsoa";
-import { API_KEY_ENVIRONMENTS } from "../enums/api-key.enums";
+import { API_KEY_ENVIRONMENTS } from "@logsjar/shared";
 
 export class GenerateApiKeyDto {
     @IsNotEmpty({

@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { Tags, Route, Controller, Post, Body, Security, Request } from 'tsoa';
+import { Tags, Route, Controller, Post, Body, Security, Request, Delete, Path } from 'tsoa';
 import { HttpResponseDTO } from '@/common/types/http.type';
 import { errorResponse, successResponse } from '@/common/utils/httpResponse.util';
 import { logger } from '@/common/configs/logger';
@@ -27,22 +27,51 @@ export class ApiKeyController extends Controller {
   ): Promise<HttpResponseDTO> {
     await validateDto(GenerateApiKeyDto, generateApiKeyDto);
     const { user_id } = req.auth_user_details;
-    const newUser = await this.apiKeyService.createApiKey(generateApiKeyDto, user_id);
-    if (!newUser.successful) {
-      logger.info(newUser?.message);
+    const serviceResponse = await this.apiKeyService.createApiKey(generateApiKeyDto, user_id);
+    if (!serviceResponse.successful) {
+      logger.info(serviceResponse?.message);
       this.setStatus(400);
       return errorResponse({
-        message: newUser?.message as string,
-        data: newUser.data,
+        message: serviceResponse?.message as string,
+        data: serviceResponse.data,
       });
     }
 
-    logger.info(newUser?.message);
+    logger.info(serviceResponse?.message);
     this.setStatus(201);
     return successResponse({
-      message: newUser?.message as string,
-      data: newUser.data,
+      message: serviceResponse?.message as string,
+      data: serviceResponse.data,
       status_code: 201,
+    });
+  }
+
+  /**
+   * Create a new API key
+   * @summary Create a new API key 
+   */
+  @Delete("/:apiKeyId")
+  public async deleteApiKey(
+    @Request() req: any,
+    @Path() apiKeyId: string
+  ): Promise<HttpResponseDTO> {
+    const { user_id } = req.auth_user_details;
+    const serviceResponse = await this.apiKeyService.deleteApiKey(apiKeyId, user_id);
+    if (!serviceResponse.successful) {
+      logger.info(serviceResponse?.message);
+      this.setStatus(400);
+      return errorResponse({
+        message: serviceResponse?.message as string,
+        data: serviceResponse.data,
+      });
+    }
+
+    logger.info(serviceResponse?.message);
+    this.setStatus(200);
+    return successResponse({
+      message: serviceResponse?.message as string,
+      data: serviceResponse.data,
+      status_code: 200,
     });
   }
 }

@@ -65,7 +65,8 @@
     "typeorm": "^0.3.21",
     "uuid": "^11.1.0",
     "winston": "^3.17.0",
-    "winston-daily-rotate-file": "^5.0.0"
+    "winston-daily-rotate-file": "^5.0.0",
+    "@logsjar/shared": "*"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",

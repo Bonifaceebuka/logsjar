@@ -6,7 +6,7 @@ import { capitalizeFirst, encrypt, generateJWT, generateOTP, generateUUID, hasEx
 import { dynamic_messages, MESSAGES } from "../../common/constants/messages";
 import { GenerateApiKeyDto } from "./dtos/api-key.dto";
 import crypto from 'node:crypto';
-import { API_KEY_ENVIRONMENTS } from "./enums/api-key.enums";
+import { API_KEY_ENVIRONMENTS } from "@logsjar/shared";
 import { GeneratedApiKey } from "./types/api-key.type";
 import { ApiKeyRepository } from "./repositories/apiKey.repository";
 import { AppError } from "@/common/errors/appError";
@@ -45,6 +45,57 @@ export default class ApiKeyService {
       data: {
         api_key: hashedApiKey.key
       },
+      message,
+    };
+  }
+
+  public async deleteApiKey(apiKeyId: string, user_id: number): Promise<ServiceResponseDTO> {
+    let message;
+
+    const existingApiKey = await this.apiKeyRepository.basicFindOneByConditions({
+      uuid: apiKeyId,
+      user_id,
+    });
+
+    if(!existingApiKey) {
+      message = dynamic_messages.NOT_FOUND("API Key")
+      throw new AppError(message, 404);
+    }
+
+    await this.apiKeyRepository.deleteByCondition({
+      uuid: apiKeyId,
+      user_id,
+    });
+
+    message = "API key deleted successfully";
+
+    return {
+      successful: true,
+      data: null,
+      message,
+    };
+  }
+
+  public async fetchApiKeys(user_id: number): Promise<ServiceResponseDTO> {
+    let message;
+
+    const apiKeys = await this.apiKeyRepository.getRepo().find({
+      where: {
+        user_id,
+      },
+      select: {
+        uuid: true,
+        name: true,
+        environment: true,
+        masked_key: true,
+      }
+    });
+
+    message = "API keys fetched successfully";
+
+    return {
+      successful: true,
+      data: apiKeys,
       message,
     };
   }
