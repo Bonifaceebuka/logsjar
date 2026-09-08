@@ -28,7 +28,7 @@ import {
   Settings as SettingsIcon,
   User2,
 } from "lucide-react";
-import Logo from "../common/logo";
+import Logo from "../ui/logo";
 import { UserButton, useUser } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 

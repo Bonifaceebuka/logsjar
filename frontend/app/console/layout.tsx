@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "../globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import DashboardSidebar from "@/components/dashboard/SidebarNav";
+import DashboardSidebar from "@/components/devconsole/SidebarNav";
 import { SidebarInset } from "@/components/ui/sidebar";
-import TopBar from "@/components/dashboard/TopBar";
+import TopBar from "@/components/devconsole/TopBar";
 
 export const metadata: Metadata = {
   title: "Logsjar",

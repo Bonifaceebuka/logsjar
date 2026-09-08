@@ -58,10 +58,6 @@ export default function ListApiKeys() {
     null,
   );
 
-  const [newExpiry, setNewExpiry] = React.useState<
-    "Never" | "30 Days" | "90 Days"
-  >("Never");
-
   // New: creation loading state
   const [isCreating, setIsCreating] = React.useState(false);
   // New: loading state for fetching saved API keys
