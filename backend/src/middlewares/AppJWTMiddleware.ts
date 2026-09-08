@@ -12,28 +12,25 @@ import { ACCESS_TOKEN_TYPES, SYS_MODELS } from "@/common/enums";
 import { MoreThan } from "typeorm";
 export function expressAuthentication(req: any, securityName: string, scopes?: string[]): Promise<any> {
     return new Promise((resolve, reject) => {
-        const authHeader = req.headers.authorization;
+        const accessToken = req.cookies.access_token;
         
         let token: string = '';
         let secretKey;
 
-        if (!authHeader) {
-            logger.error("No auth header found!")
+        if (!accessToken) {
+            logger.error("No auth cookies found!")
             return reject(new AppError("Unauthorized access!",403));
         }
 
-        if (typeof authHeader === 'string') {
-            const headerParts = authHeader.trim().split(/\s+/);
-            if (headerParts.length === 2 && headerParts[0] === 'Bearer') {
-              token = headerParts[1];
-            }
-            else if(headerParts.length === 1){
-                token = authHeader
-            }
-          }
+        const headerParts = accessToken.trim().split(/\s+/);
+        if (headerParts.length === 2 && headerParts[0] === 'Bearer') {
+            token = headerParts[1];
+        }
+        else if(headerParts.length === 1){
+            token = accessToken
+        }
 
-        secretKey = CONFIGS.JWT_TOKEN.SECRET
-        
+        secretKey = CONFIGS.JWT_TOKEN.SECRET        
         jwt.verify(token, secretKey, async (error:any, decoded: any) => {
             const authData = decoded?.jwtData
             if (error || !decoded || !authData) {
@@ -58,23 +55,23 @@ export function expressAuthentication(req: any, securityName: string, scopes?: s
                 return reject(new AppError("Unauthorized access!",401));
             }
 
-            if(authData?.ACCESS_TOKEN_TYPE && authData?.ACCESS_TOKEN_TYPE === ACCESS_TOKEN_TYPES.REFRESH_ACCESS_TOKEN){
-                const accessTokenRepository = new AccessTokenRepository();
-                const foundToken = await accessTokenRepository.getRepo().findOne({
-                    where:{
-                        expires_at: MoreThan(new Date()),
-                        token,
-                        accessable_id: existingUser.id,
-                        accessable_to: SYS_MODELS.USER_MODEL
-                    }
-                });
+            // if(authData?.ACCESS_TOKEN_TYPE && authData?.ACCESS_TOKEN_TYPE === ACCESS_TOKEN_TYPES.REFRESH_ACCESS_TOKEN){
+            //     const accessTokenRepository = new AccessTokenRepository();
+            //     const foundToken = await accessTokenRepository.getRepo().findOne({
+            //         where:{
+            //             expires_at: MoreThan(new Date()),
+            //             token,
+            //             accessable_id: existingUser.id,
+            //             accessable_to: SYS_MODELS.USER_MODEL
+            //         }
+            //     });
     
-                if(!foundToken){
-                    const message = "User token has expired!";
-                    logger.info(message)
-                    return reject(new AppError("Unauthorized access!",401));
-                }
-            }
+            //     if(!foundToken){
+            //         const message = "User token has expired!";
+            //         logger.info(message)
+            //         return reject(new AppError("Unauthorized access!",401));
+            //     }
+            // }
             
             // Attach user data to request
             req.auth_user_details = authData;

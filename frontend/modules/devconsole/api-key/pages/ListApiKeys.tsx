@@ -40,7 +40,7 @@ const statusColors: Record<KeyRow["status"], string> = {
 };
 
 export default function ListApiKeys() {
-    type KeyRow = {
+  type KeyRow = {
     id: string;
     name: string;
     Environment: "Read Only" | "Write Only" | "Full Access";
@@ -463,7 +463,8 @@ export default function ListApiKeys() {
 
       {/* Generate New API Key Modal */}
       <NewApiKeyDialog 
-        generateOpen={generateOpen} setGenerateOpen={setGenerateOpen}
+        generateNewApiDialogOpen={generateOpen} 
+        setGenerateNewApiDialogOpen={setGenerateOpen}
         limitReached={limitReached}
       />
 

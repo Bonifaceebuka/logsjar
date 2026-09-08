@@ -133,14 +133,16 @@ export class AuthController extends Controller {
        res.cookie("access_token", data?.token, {
         httpOnly: true,
         secure: CONFIGS.IS_PRODUCTION,
-        sameSite: "lax",
+        sameSite: CONFIGS.IS_PRODUCTION ? "none" : "lax",
+        path: "/",
         maxAge: data?.token_expires_at,
       });
 
       res.cookie("refresh_token", data?.refresh_accesss_token, {
         httpOnly: true,
         secure: CONFIGS.IS_PRODUCTION,
-        sameSite: "lax",
+        sameSite: CONFIGS.IS_PRODUCTION ? "none" : "lax",
+        path: "/",
         maxAge: data?.refresh_token_expires_at,
       });
 
@@ -206,14 +208,16 @@ export class AuthController extends Controller {
     res.cookie("access_token", refreshAccessToken?.data?.token, {
         httpOnly: true,
         secure: CONFIGS.IS_PRODUCTION,
-        sameSite: "lax",
+        sameSite: CONFIGS.IS_PRODUCTION ? "none" : "lax",
+        path: "/",
         maxAge: refreshAccessToken?.data?.token_expires_at,
       });
 
       res.cookie("refresh_token", refreshAccessToken?.data?.refresh_accesss_token, {
         httpOnly: true,
         secure: CONFIGS.IS_PRODUCTION,
-        sameSite: "lax",
+        sameSite: CONFIGS.IS_PRODUCTION ? "none" : "lax",
+        path: "/",
         maxAge: refreshAccessToken?.data?.refresh_token_expires_at,
       });
       
@@ -270,14 +274,16 @@ export class AuthController extends Controller {
       res.cookie("access_token", data?.token, {
         httpOnly: true,
         secure: CONFIGS.IS_PRODUCTION,
-        sameSite: "lax",
+        sameSite: CONFIGS.IS_PRODUCTION ? "none" : "lax",
+        path: "/",
         maxAge: 15 * 60 * 1000,
       });
 
       res.cookie("refresh_token", data?.refresh_accesss_token, {
         httpOnly: true,
         secure: CONFIGS.IS_PRODUCTION,
-        sameSite: "lax",
+        sameSite: CONFIGS.IS_PRODUCTION ? "none" : "lax",
+        path: "/",
         maxAge: 30 * 24 * 60 * 60 * 1000,
       });
 

@@ -58,6 +58,7 @@ export default function SocialLogin() {
                     flex h-11 w-full items-center justify-center gap-3
                     rounded-xl border border-border
                     bg-muted/30
+                    cursor-point
                     text-sm font-medium text-foreground
                     transition-all duration-300
                     hover:border-primary/40
@@ -76,6 +77,7 @@ export default function SocialLogin() {
                     flex h-11 w-full items-center justify-center gap-3
                     rounded-xl border border-border
                     bg-muted/30
+                    cursor-point
                     text-sm font-medium text-foreground
                     transition-all duration-300
                     hover:border-primary/40
