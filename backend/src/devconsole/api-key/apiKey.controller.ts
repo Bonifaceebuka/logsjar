@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { Tags, Route, Controller, Post, Body, Security, Request, Delete, Path } from 'tsoa';
+import { Tags, Route, Controller, Post, Body, Security, Request, Delete, Path, Get } from 'tsoa';
 import { HttpResponseDTO } from '@/common/types/http.type';
 import { errorResponse, successResponse } from '@/common/utils/httpResponse.util';
 import { logger } from '@/common/configs/logger';
@@ -57,6 +57,34 @@ export class ApiKeyController extends Controller {
   ): Promise<HttpResponseDTO> {
     const { user_id } = req.auth_user_details;
     const serviceResponse = await this.apiKeyService.deleteApiKey(apiKeyId, user_id);
+    if (!serviceResponse.successful) {
+      logger.info(serviceResponse?.message);
+      this.setStatus(400);
+      return errorResponse({
+        message: serviceResponse?.message as string,
+        data: serviceResponse.data,
+      });
+    }
+
+    logger.info(serviceResponse?.message);
+    this.setStatus(200);
+    return successResponse({
+      message: serviceResponse?.message as string,
+      data: serviceResponse.data,
+      status_code: 200,
+    });
+  }
+
+  /**
+   * Fetch created API keys by a user account
+   * @summary Fetch created API keys by a user account 
+   */
+  @Get("/")
+  public async fetchApiKeys(
+    @Request() req: any,
+  ): Promise<HttpResponseDTO> {
+    const { user_id } = req.auth_user_details;
+    const serviceResponse = await this.apiKeyService.fetchApiKeys(user_id);
     if (!serviceResponse.successful) {
       logger.info(serviceResponse?.message);
       this.setStatus(400);

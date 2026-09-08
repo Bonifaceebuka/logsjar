@@ -86,6 +86,7 @@ export default class ApiKeyService {
       select: {
         uuid: true,
         name: true,
+        created_at: true,
         environment: true,
         masked_key: true,
       }
