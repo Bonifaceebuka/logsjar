@@ -53,13 +53,13 @@ export default function ListApiKeyTable({
                                 <Button
                                   variant="outline"
                                   size="sm"
-                                  className="rounded-lg"
+                                  className="rounded-lg bg-danger"
                                   onClick={async (e) => {
                                     e.stopPropagation();
                                   }}
                                 >
                                   <Trash2 className="h-4 w-4" />
-                                  Revoke
+                                  Delete
                                 </Button>
                               </span>
                             </TooltipTrigger>
