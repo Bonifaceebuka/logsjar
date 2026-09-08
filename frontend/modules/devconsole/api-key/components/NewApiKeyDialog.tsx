@@ -15,11 +15,15 @@ import { useCreateNewApiKeyStore } from '../stores/createApiKey.store';
 export default function NewApiKeyDialog({
   generateNewApiDialogOpen,
   setGenerateNewApiDialogOpen,
+  setGeneratedSecret,
   limitReached,
+  setRevealOpen
 }: {
   generateNewApiDialogOpen: boolean;
   setGenerateNewApiDialogOpen: (open: boolean) => void;
+  setGeneratedSecret: (secret: string | null) => void; 
   limitReached: boolean;
+  setRevealOpen: (open: boolean) => void;
 }) {
   const navigate = useRouter();
   const { mutate } = useCreateNewApiKey();
@@ -41,7 +45,7 @@ export default function NewApiKeyDialog({
   const { createNewApiKey, submitting } = useCreateNewApiKeyStore();
 
   const handleLogin = async (data: NewApiKeyFormData) => {
-    createNewApiKey(data, mutate, queryClient, setGenerateNewApiDialogOpen, navigate.push, toast);
+    createNewApiKey(data, mutate, queryClient, setGenerateNewApiDialogOpen, setGeneratedSecret, setRevealOpen, navigate.push, toast);
   };
 
   return (

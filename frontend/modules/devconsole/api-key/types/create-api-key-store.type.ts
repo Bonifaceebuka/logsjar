@@ -13,6 +13,8 @@ export interface CreateNewApiKeyStore extends FormState {
     >,
     queryClient: QueryClient,
     handleOnModalClose: any,
+    setGeneratedSecret: (secret: string | null) => void,
+    setRevealOpen: (open: boolean) => void,
     navigate: (path: string) => void,
     toast: (options: {
       title: string;

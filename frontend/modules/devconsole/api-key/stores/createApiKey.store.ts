@@ -3,11 +3,8 @@ import { devtools } from "zustand/middleware";
 import {
   formatValidationMessage,
   ErrorMessages,
-} from "@/common/utils/formatter";
+} from "@/common/utils/error-message-formatter";
 import { AxiosError } from "axios";
-import {
-  ILoginResponseEmail
-} from "@/common/types/IAuth";
 import { CreateNewApiKeyStore } from "../types/create-api-key-store.type";
 
 export const useCreateNewApiKeyStore =
@@ -24,27 +21,28 @@ export const useCreateNewApiKeyStore =
           errorMsg: "",
         }),
 
-      createNewApiKey: async (formData, mutate, queryClient, handleOnModalClose, navigate, toast) => {
+      createNewApiKey: async (formData, mutate, queryClient, handleOnModalClose, setGeneratedSecret, setRevealOpen, navigate, toast) => {
         set({ submitting: true, errorMsg: "", successMsg: "" });
 
         mutate(formData, {
           onSuccess(response) {
             const { status_code, message, data } = response.data;
-
             if (status_code === 200 || status_code === 201) {
-              const { token, user } = data as ILoginResponseEmail;
+              const { api_key } = data;
               set({
                 submitting: false,
                 successMsg: message,
               });
 
-              queryClient.invalidateQueries({ queryKey: ["apiKeys"] });
+              queryClient.invalidateQueries({ queryKey: ["api-keys"] });
               toast({
                 title: message,
                 description: "Create new API Key!",
               });
 
               handleOnModalClose()
+              setRevealOpen(true)
+              setGeneratedSecret(api_key)
             } else if (status_code === 400) {
               const errorMessages = message;
               const firstMessage = Array.isArray(errorMessages)

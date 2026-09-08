@@ -2,14 +2,7 @@
 
 import React from 'react'
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableHeader,
-  TableHead,
-  TableRow,
-  TableBody,
-  TableCell,
-} from "@/components/ui/table";
+
 import {
   Dialog,
   DialogContent,
@@ -25,155 +18,21 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import NewApiKeyDialog from "@/modules/devconsole/api-key/components/NewApiKeyDialog";
-
-type KeyRow = {
-  name: string;
-  Environment: "Read Only" | "Write Only" | "Full Access";
-  created: string;
-  lastUsed: string;
-  status: "Active" | "Revoked";
-};
-
-const statusColors: Record<KeyRow["status"], string> = {
-  Active: "#00C2A8",
-  Revoked: "#6B7280",
-};
+import { useFetchApiKeys } from '../api/api-key.api';
+import ListApiKeyTable from '../components/ListApiKeyTable';
 
 export default function ListApiKeys() {
-  type KeyRow = {
-    id: string;
-    name: string;
-    Environment: "Read Only" | "Write Only" | "Full Access";
-    created: string;
-    lastUsed: string;
-    status: "Active" | "Revoked";
-  };
-
-  // Remove hardcoded seed; load from API instead
-  const [keys, setKeys] = React.useState<KeyRow[]>([]);
-  const [selected, setSelected] = React.useState<KeyRow | null>(null);
   const [generateOpen, setGenerateOpen] = React.useState(false);
   const [revealOpen, setRevealOpen] = React.useState(false);
   const [generatedSecret, setGeneratedSecret] = React.useState<string | null>(
     null,
   );
+  const {
+    data: apiKeys,
+    isLoading: isLoadingKeys
+  } = useFetchApiKeys();
 
-  // New: creation loading state
-  const [isCreating, setIsCreating] = React.useState(false);
-  // New: loading state for fetching saved API keys
-  const [isLoadingKeys, setIsLoadingKeys] = React.useState(true);
-  // New: copied feedback state
   const [copied, setCopied] = React.useState(false);
-
-  // Simple client-side cache for keys to avoid repeated fetching on reloads
-  const CACHE_STORAGE_KEY = "oml_api_keys_cache";
-  const CACHE_TTL_MS = 10 * 60_000; // 10 minutes TTL; increase to cut fetches further
-  const inFlightRef = React.useRef<Promise<KeyRow[]> | null>(null);
-
-  const refreshKeys = async (opts?: { force?: boolean }) => {
-    setIsLoadingKeys(true);
-    try {
-      const now = Date.now();
-
-      // Try cache first unless forced
-      let cached: { data: KeyRow[]; timestamp: number } | null = null;
-      try {
-        const raw = localStorage.getItem(CACHE_STORAGE_KEY);
-        if (raw) cached = JSON.parse(raw);
-      } catch {}
-      const isFresh = cached && now - cached.timestamp < CACHE_TTL_MS;
-
-      if (!opts?.force && isFresh) {
-        setKeys(cached!.data);
-        return;
-      }
-
-      // Dedupe concurrent fetches
-      if (!inFlightRef.current) {
-        inFlightRef.current = fetch("/api/api-keys", {
-          method: "GET",
-          cache: "no-store",
-        })
-          .then(async (res) => {
-            if (!res.ok) throw new Error("Failed to fetch API keys");
-            return (await res.json()) as KeyRow[];
-          })
-          .finally(() => {
-            inFlightRef.current = null;
-          });
-      }
-
-      const data = await inFlightRef.current;
-      setKeys(data);
-      try {
-        localStorage.setItem(
-          CACHE_STORAGE_KEY,
-          JSON.stringify({ data, timestamp: now }),
-        );
-      } catch {}
-    } finally {
-      setIsLoadingKeys(false);
-    }
-  };
-
-  React.useEffect(() => {
-    // Load keys on mount: check cache first, fetch from API if cache is empty or stale
-    // refreshKeys();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const createKey = async () => {
-    setIsCreating(true);
-    // try {
-    //   const res = await fetch("/api/api-keys/generate-secret-key", {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify({
-    //       name: newName || "New Key",
-    //       Environment: newEnvironment,
-    //       expiresAt: newExpiry,
-    //     }),
-    //   });
-    //   if (!res.ok) return;
-    //   const { key } = await res.json();
-    //   setGeneratedSecret(key);
-    //   setRevealOpen(true);
-
-    //   // Force refresh to ensure cache reflects the newly created key
-    //   // await refreshKeys({ force: true });
-    //   setGenerateOpen(false);
-    //   setNewName("");
-    //   setNewEnvironment("Read Only");
-    //   setNewExpiry("Never");
-    // } finally {
-    //   setIsCreating(false);
-    // }
-  };
-
-  const revokeSelected = async () => {
-    if (!selected) return;
-
-    // Prevent revoking the system-generated "Default" key
-    if (selected.name === "Default") {
-      toast.error("Cannot delete the system-generated Default API key");
-      return;
-    }
-
-    // Prevent revoking the last active key
-    if (activeCount <= 1 && selected.status === "Active") {
-      toast.error("Cannot revoke the only active API key");
-      return;
-    }
-
-    await fetch("/api/api-keys/revoke", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: selected.id }),
-    });
-    // Force refresh to reflect revocation immediately and update cache
-    await refreshKeys({ force: true });
-    setSelected((sel) => (sel ? { ...sel, status: "Revoked" } : sel));
-  };
 
   const copyGeneratedSecret = () => {
     if (!generatedSecret) return;
@@ -182,33 +41,24 @@ export default function ListApiKeys() {
     window.setTimeout(() => setCopied(false), 1500);
   };
 
-  const activeCount = React.useMemo(
-    () => keys.filter((k) => k.status === "Active").length,
-    [keys],
-  );
+  const limitReached = apiKeys?.length >= 5;
 
-  const limitReached = activeCount >= 5;
-
-  const revokedCount = React.useMemo(
-    () => keys.filter((k) => k.status === "Revoked").length,
-    [keys],
-  );
-  const lastGeneratedAgo = React.useMemo(() => {
-    const timestamps = keys
-      .map((k) => Date.parse(k.created))
-      .filter((t) => !Number.isNaN(t));
-    if (timestamps.length === 0) return "—";
-    const latest = Math.max(...timestamps);
-    const diffMs = Date.now() - latest;
-    const secs = Math.floor(diffMs / 1000);
-    const mins = Math.floor(secs / 60);
-    const hours = Math.floor(mins / 60);
-    const days = Math.floor(hours / 24);
-    if (days >= 1) return `${days} day${days > 1 ? "s" : ""} ago`;
-    if (hours >= 1) return `${hours} hour${hours > 1 ? "s" : ""} ago`;
-    if (mins >= 1) return `${mins} min${mins > 1 ? "s" : ""} ago`;
-    return "just now";
-  }, [keys]);
+  // const lastGeneratedAgo = React.useMemo(() => {
+  //   const timestamps = keys
+  //     .map((k) => Date.parse(k.created))
+  //     .filter((t) => !Number.isNaN(t));
+  //   if (timestamps.length === 0) return "—";
+  //   const latest = Math.max(...timestamps);
+  //   const diffMs = Date.now() - latest;
+  //   const secs = Math.floor(diffMs / 1000);
+  //   const mins = Math.floor(secs / 60);
+  //   const hours = Math.floor(mins / 60);
+  //   const days = Math.floor(hours / 24);
+  //   if (days >= 1) return `${days} day${days > 1 ? "s" : ""} ago`;
+  //   if (hours >= 1) return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+  //   if (mins >= 1) return `${mins} min${mins > 1 ? "s" : ""} ago`;
+  //   return "just now";
+  // }, [keys]);
 
   return (
     <div className="space-y-4">
@@ -269,16 +119,18 @@ export default function ListApiKeys() {
 
       {/* Keys Table */}
       <div className="rounded-md border">
-        {keys.length > 0 && (
+        {apiKeys?.length > 0 && (
+
           <div className="flex items-center justify-between px-3 py-2">
-            <h3 className="text-sm font-medium">Your API Keys</h3>
+            <h3 className="text-sm font-medium">Your API ApiKeys</h3>
             <span className="text-xs text-muted-foreground">
-              {keys.length} keys
+              {apiKeys?.length} keys
             </span>
           </div>
         )}
 
-        {keys.length === 0 ? (
+        {apiKeys?.length === 0 ? (
+
           isLoadingKeys ? (
             <div className="flex items-center justify-center py-12 text-muted-foreground">
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -303,169 +155,19 @@ export default function ListApiKeys() {
               </div>
             )}
 
-            <Table className="min-w-full">
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Environment</TableHead>
-                  <TableHead>Created</TableHead>
-                  <TableHead>Last Used</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {keys.map((k, idx) => (
-                  <TableRow
-                    key={`${k.name}-${idx}`}
-                    className="cursor-pointer transition-colors hover:bg-white/5"
-                    onClick={() => setSelected(k)}
-                  >
-                    <TableCell className="text-white/90">{k.name}</TableCell>
-                    <TableCell className="text-white/80">{k.Environment}</TableCell>
-                    <TableCell className="text-white/70">{k.created}</TableCell>
-                    <TableCell className="text-white/70">
-                      {k.lastUsed}
-                    </TableCell>
-                    <TableCell
-                      className="font-medium"
-                      style={{ color: statusColors[k.status] }}
-                    >
-                      {k.status}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex gap-2">
-                        {k.status !== "Revoked" && (
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <span className="inline-flex">
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  className="rounded-lg"
-                                  disabled={
-                                    activeCount <= 1 && k.status === "Active"
-                                  }
-                                  onClick={async (e) => {
-                                    e.stopPropagation();
-                                    if (k.name === "Default") {
-                                      toast.error(
-                                        "Cannot delete the system-generated Default API key",
-                                      );
-                                      return;
-                                    }
-                                    if (
-                                      activeCount <= 1 &&
-                                      k.status === "Active"
-                                    ) {
-                                      toast.error(
-                                        "Cannot revoke the only active API key",
-                                      );
-                                      return;
-                                    }
-                                    setSelected(k);
-                                    await revokeSelected();
-                                  }}
-                                >
-                                  <Trash2 className="h-4 w-4" />
-                                  Revoke
-                                </Button>
-                              </span>
-                            </TooltipTrigger>
-                          </Tooltip>
-                        )}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <ListApiKeyTable 
+              apiKeys={apiKeys?.data || []}
+            />
           </div>
         )}
       </div>
-
-      {/* Key Detail Drawer (right side) */}
-      {selected && (
-        <div
-          className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm"
-          onClick={() => setSelected(null)}
-        >
-          <div
-            className="fixed right-0 top-0 h-full w-105 border-l p-4"
-            style={{
-              background: "#0E1117",
-              borderColor: "rgba(255,255,255,0.08)",
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between">
-              <h3 className="text-sm font-medium">API Key Details</h3>
-              <div className="flex gap-2">
-                {selected.status !== "Revoked" && (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <span className="inline-flex">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="rounded-md"
-                          disabled={
-                            (activeCount <= 1 &&
-                              selected.status === "Active") ||
-                            selected.name === "Default"
-                          }
-                          onClick={revokeSelected}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                          Revoke
-                        </Button>
-                      </span>
-                    </TooltipTrigger>
-                    <TooltipContent sideOffset={6}>
-                      {selected.name === "Default"
-                        ? "Cannot delete the system-generated Default API key"
-                        : activeCount <= 1 && selected.status === "Active"
-                          ? "Cannot revoke the only active API key"
-                          : "Revoke this API key"}
-                    </TooltipContent>
-                  </Tooltip>
-                )}
-              </div>
-            </div>
-
-            <div className="mt-3 space-y-3 text-sm">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Name</span>
-                <span>{selected.name}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Environment</span>
-                <span>{selected.Environment}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Created</span>
-                <span>{selected.created}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Last Used</span>
-                <span>{selected.lastUsed}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Status</span>
-                <span style={{ color: statusColors[selected.status] }}>
-                  {selected.status}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Generate New API Key Modal */}
       <NewApiKeyDialog 
         generateNewApiDialogOpen={generateOpen} 
         setGenerateNewApiDialogOpen={setGenerateOpen}
-        limitReached={limitReached}
+        setGeneratedSecret={setGeneratedSecret}
+        limitReached={apiKeys?.data?.limitReached || false}
+        setRevealOpen={setRevealOpen}
       />
 
       {/* One-time Secret Reveal Dialog */}
@@ -538,14 +240,14 @@ export default function ListApiKeys() {
           border: "1px solid rgba(255,255,255,0.05)",
         }}
       >
-        <div className="flex items-center gap-6">
+        {/* <div className="flex items-center gap-6">
           <span className="text-muted-foreground">Active Keys</span>
           <span className="font-medium">{activeCount}</span>
           <span className="text-muted-foreground">Revoked</span>
           <span className="font-medium">{revokedCount}</span>
           <span className="text-muted-foreground">Last Generated</span>
           <span className="font-medium">{lastGeneratedAgo}</span>
-        </div>
+        </div> */}
       </div>
     </div>
   )
