@@ -116,7 +116,7 @@ export default class ApiKeyService {
 
     const key = `${prefix}${secret}`;
 
-    const hash = this.hashApiKey(secret);
+    const hash = this.hashApiKey(key);
 
     return {
       key,
@@ -130,7 +130,7 @@ export default class ApiKeyService {
    *
    * The plaintext secret should NEVER be stored.
    */
-  hashApiKey(secret: string): string {
+  public hashApiKey(secret: string): string {
     return crypto
       .createHash('sha256')
       .update(secret, 'utf8')

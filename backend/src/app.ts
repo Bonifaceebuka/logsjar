@@ -8,6 +8,7 @@ import { gatewayMiddleware } from "./middlewares/gatewayMiddleware";
 import { CONFIGS } from "./common/configs";
 import { attachExpressReqAndRes } from "./middlewares/attachExpressReqAndRes";
 import cookieParser from "cookie-parser";
+import { Logsjar } from "@logsjar/expressjs";
 
 export async function app() : Promise<express.Application> {
     const app: express.Application = express();
@@ -15,6 +16,25 @@ export async function app() : Promise<express.Application> {
         app.use('/swagger/api', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     }
 
+    const logsJar = new Logsjar({
+        autoCapture: false,
+    });
+
+    // console.log({logsJar});
+    logsJar.setUser({
+        id: "user.id",
+        email: "user.email",
+    });
+
+    logsJar.setTag("service", "payment-api");
+
+    logsJar.captureMessage("Hello World");
+    logsJar.captureMessage("Payment completed", {
+    level: "error",
+    });
+
+
+    // app.use(logsJar);
     app.use(cookieParser());
     app.use(attachExpressReqAndRes);
     await expressConfig(app);
