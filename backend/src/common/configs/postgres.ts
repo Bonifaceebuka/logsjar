@@ -1,5 +1,5 @@
 import { DataSource } from "typeorm";
-import { CONFIGS } from ".";
+import { CONFIGS } from "./index";
 const { DATABASE, IS_PRODUCTION } = CONFIGS;
 const isCompiled = __filename.endsWith(".js");
 

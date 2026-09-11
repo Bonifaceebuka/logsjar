@@ -12,7 +12,7 @@
     "tsoa:spec": "tsoa spec --c tsoa.json",
     "preswagger:clean": "rimraf src/swagger",
     "tsoa:update": "npm run preswagger:clean && npm run tsoa:routes && npm run tsoa:spec",
-    "typeorm": "ts-node ./node_modules/typeorm/cli.js",
+    "typeorm": "ts-node ../node_modules/typeorm/cli.js",
     "typeorm:ds": "npm run typeorm -- -d ./src/common/configs/postgres.ts",
     "migration:create": "npm run typeorm migration:create",
     "migration:generate": "npm run typeorm:ds -- migration:generate",

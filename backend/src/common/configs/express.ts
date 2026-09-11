@@ -15,8 +15,12 @@ const expressConfig = async (app: Application): Promise<void> => {
     // app.use(limiter);
     app.use(urlencoded({ extended: true }));
     app.use((req, res, next) => {
+        if (req.url.startsWith("/logs") && req.method === "POST") {
+            return next();
+        }
         return json()(req, res, next);
     });
+    
     await postgresLoader();
     RegisterRoutes(app);
 };
