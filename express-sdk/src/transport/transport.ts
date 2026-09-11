@@ -18,8 +18,6 @@ export class Transport {
       async () => {
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), this.config.timeoutMs);
-        console.log("event: ",JSON.stringify({events}))
-
         try {
           const response = await fetch(`${this.config.baseUrl.replace(/\/$/, "")}/logs`, {
             method: "POST",

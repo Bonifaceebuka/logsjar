@@ -1,4 +1,3 @@
-import { LogLevel } from '../enums/logs.enums';
 import { LogsModel } from '../models/logs.model';
 import { IncomingLogEvent } from '../types/logs.type';
 
@@ -20,20 +19,6 @@ export function mapLogEventToEntity(
       release,
       ...otherDataSent 
     } = event;
-
-//   const user =
-//     typeof context.user === 'object' &&
-//     context.user !== null &&
-//     !Array.isArray(context.user)
-//       ? context.user as Record<string, unknown>
-//       : undefined;
-
-//   const tags =
-//     typeof context.tags === 'object' &&
-//     context.tags !== null &&
-//     !Array.isArray(context.tags)
-//       ? context.tags as Record<string, unknown>
-//       : undefined;
 
   return {
     type, 

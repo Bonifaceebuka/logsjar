@@ -3,14 +3,9 @@ import {
   LOG_LEVELS,
 } from '../types/logs.type';
 
-const MAX_MESSAGE_LENGTH = 100_000;
-const MAX_ENVIRONMENT_LENGTH = 50;
-const MAX_TYPE_LENGTH = 50;
-
 export function validateLogEvent(
   value: unknown,
 ): value is IncomingLogEvent {
-    // console.log({value})
   try{
     if (
     typeof value !== 'object' ||
@@ -23,10 +18,6 @@ export function validateLogEvent(
   const event = value as Record<string, unknown>;
 
   if (typeof event.type !== 'string') {
-    return false;
-  }
-
-  if (event.type.length > MAX_TYPE_LENGTH) {
     return false;
   }
 
@@ -49,15 +40,7 @@ export function validateLogEvent(
     return false;
   }
 
-  if (event.message.length > MAX_MESSAGE_LENGTH) {
-    return false;
-  }
-
   if (typeof event.environment !== 'string') {
-    return false;
-  }
-
-  if (event.environment.length > MAX_ENVIRONMENT_LENGTH) {
     return false;
   }
 
