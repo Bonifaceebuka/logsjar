@@ -96,6 +96,7 @@ export default class LogsService {
         accepted += eventsToInsert.length;
       }
 
+      message = "Logs created successfully";
       return {
         successful: true,
         data: {

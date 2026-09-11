@@ -20,7 +20,7 @@ export function createConfig(options: Partial<LogsjarConfig> & { apiKey?: string
 
   return {
     apiKey,
-    baseUrl: options.baseUrl ?? "https://api.logsjar.com",
+    baseUrl: options.baseUrl ?? "http://localhost:2026",
     environment: options.environment ?? process.env.NODE_ENV ?? "development",
     release: options.release,
     service: options.service,
