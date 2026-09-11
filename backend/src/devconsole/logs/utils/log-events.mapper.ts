@@ -20,6 +20,13 @@ export function mapLogEventToEntity(
       ...otherDataSent 
     } = event;
 
+    const extras = {
+        ...(extra !== undefined ? { extra } : {}),
+        ...(Object.keys(otherDataSent).length > 0
+        ? { others: otherDataSent }
+        : {}),
+    };
+
   return {
     type, 
     level: level as any, 
@@ -30,12 +37,8 @@ export function mapLogEventToEntity(
     timestamp,
     api_key_id,
     user_id,
-    extras:{
-        extra,
-        others: {...otherDataSent} 
-    },
+    extras: Object.keys(extras).length === 0 ? null: extras,
     context,
     release,
-
   };
 }
