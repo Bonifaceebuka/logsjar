@@ -24,12 +24,22 @@ export default class ApiKeyService {
     const { name, environment } = generateApiKeyDto;
     let message;
 
-    const hashedApiKey = this.generateApiKey(environment);
+    let hashedApiKey = this.generateApiKey(environment);
     
     if (!hashedApiKey.hash) {
       throw new AppError("Unable to generate your API Key")
     }
 
+    const existingKey = await this.apiKeyRepository.getRepo().count({
+      where:{
+        key_hash: hashedApiKey.hash
+      }
+    })
+
+    if(existingKey > 0){
+      hashedApiKey = this.generateApiKey(environment, existingKey.toString());
+    }
+    
     await this.apiKeyRepository.create({
       key_hash: hashedApiKey.hash,
       name,
@@ -107,14 +117,14 @@ export default class ApiKeyService {
    * Example:
    * sk_live_7Q3x... 
    */
-  generateApiKey(environment: API_KEY_ENVIRONMENTS): GeneratedApiKey {
+  generateApiKey(environment: API_KEY_ENVIRONMENTS, extraString?: string): GeneratedApiKey {
 
     // 32 bytes = 256 bits of cryptographically secure randomness.
     const secret = crypto.randomBytes(32).toString('base64url');
     const env = environment === API_KEY_ENVIRONMENTS.PRODUCTION ? 'live' : 'dev'
     const prefix = `sk_${env}_`;
 
-    const key = `${prefix}${secret}`;
+    const key = `${prefix}${secret}${extraString && extraString?.length > 0 ? extraString : ''}`;
 
     const hash = this.hashApiKey(key);
 

@@ -12,7 +12,7 @@ export class ApiKeyModel extends BaseModel {
   @Column({type:"varchar"})
   name!: string;
 
-  @Column()
+  @Column({unique: true})
   key_hash!: string;
 
   @Column()

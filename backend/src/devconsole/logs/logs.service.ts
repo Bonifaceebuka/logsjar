@@ -9,12 +9,17 @@ import { parseNDJSON } from "./utils/ndjson-parser";
 import { validateLogEvent } from "./utils/log.utils";
 import { logger } from "@/common/configs/logger";
 import { AppError } from "@/common/errors/appError";
+import { LogPublisher } from "./queue/logs.publisher";
+import { rabbitMQ, RabbitMQ } from "@/common/configs/rabbitmq";
 
 @Service()
 export default class LogsService {
   private logRepository: LogRepository;
 
-  constructor() {
+  constructor(
+    // private readonly publisher: LogPublisher
+  ) {
+    // this.publisher = new LogPublisher(RabbitMQ);
     this.logRepository = new LogRepository();
   }
 
@@ -51,6 +56,7 @@ export default class LogsService {
     let accepted = 0;
     let rejected = 0;
     const res = req.res
+    const publisher = new LogPublisher(rabbitMQ)
 
     try {
       for await (const parsedChunk of parseNDJSON(req)) {
@@ -60,8 +66,6 @@ export default class LogsService {
           : [parsedChunk];
 
         for (const rawEvent of events) {
-          console.log({ rawEvent });
-
           if (!validateLogEvent(rawEvent)) {
             rejected++;
             continue;
@@ -72,11 +76,16 @@ export default class LogsService {
           if (batch.length >= MAX_BATCH_SIZE) {
             const eventsToInsert = batch.splice(0, MAX_BATCH_SIZE);
 
-            await this.createAppLog(
-              eventsToInsert,
+            // await this.createAppLog(
+            //   eventsToInsert,
+            //   user_id,
+            //   api_key_id
+            // );
+
+            await publisher.publish(eventsToInsert,
               user_id,
               api_key_id
-            );
+            )
 
             accepted += eventsToInsert.length;
           }
@@ -87,11 +96,16 @@ export default class LogsService {
       if (batch.length > 0) {
         const eventsToInsert = batch.splice(0, batch.length);
 
-        await this.createAppLog(
-          eventsToInsert,
+        // await this.createAppLog(
+        //   eventsToInsert,
+        //   user_id,
+        //   api_key_id
+        // );
+
+        await publisher.publish(eventsToInsert,
           user_id,
           api_key_id
-        );
+        )
 
         accepted += eventsToInsert.length;
       }

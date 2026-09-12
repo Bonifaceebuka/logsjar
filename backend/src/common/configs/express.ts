@@ -4,6 +4,7 @@ import rateLimit from "express-rate-limit";
 import { postgresLoader } from "./postgres";
 import { RegisterRoutes } from "../../swagger/routes/routes";
 import { corsOptions } from "./cors";
+import { rabbitMQ, RabbitMQ } from "./rabbitmq";
 
 const limiter = rateLimit({
     windowMs: 1 * 60 * 1000,
@@ -22,6 +23,7 @@ const expressConfig = async (app: Application): Promise<void> => {
     });
     
     await postgresLoader();
+    await rabbitMQ.connect();
     RegisterRoutes(app);
 };
 

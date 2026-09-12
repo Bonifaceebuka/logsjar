@@ -31,6 +31,11 @@ enum EnvironmentKeys {
     GITHUB_CLIENT_SECRET = 'GITHUB_CLIENT_SECRET',
     GITHUB_CALLBACK_URL = 'GITHUB_CALLBACK_URL',
     FRONTEND_URL = 'FRONTEND_URL',
+    RABBITMQ_URL = 'RABBITMQ_URL',
+    RABBITMQ_LOG_EXCHANGE = 'RABBITMQ_LOG_EXCHANGE',
+    RABBITMQ_LOG_QUEUE = 'RABBITMQ_LOG_QUEUE',
+    RABBITMQ_LOG_ROUTING_KEY = 'RABBITMQ_LOG_ROUTING_KEY',
+    RABBITMQ_LOG_DLQ = 'RABBITMQ_LOG_DLQ',
 }
 
 export function getEnv(key: EnvironmentKeys): string {
@@ -105,5 +110,16 @@ export const CONFIGS ={
         CLIENT_SECRET: getEnv(EnvironmentKeys.GITHUB_CLIENT_SECRET),
         CALLBACK_URL: getEnv(EnvironmentKeys.GITHUB_CALLBACK_URL),
         FRONTEND_URL: getEnv(EnvironmentKeys.FRONTEND_URL),
+    },
+    RABBITMQ:{
+        URL: getEnv(EnvironmentKeys.RABBITMQ_URL),
+        EXCHANGE_NAME: getEnv(EnvironmentKeys.RABBITMQ_LOG_EXCHANGE),
+        QUEUE_NAME: getEnv(EnvironmentKeys.RABBITMQ_LOG_QUEUE),
+        LOG_RETRY_5S: 'logs.retry.5s',
+        LOG_RETRY_30S: 'logs.retry.30s',
+        LOG_RETRY_5M: 'logs.retry.5m',
+        LOG_RETRY_30M: 'logs.retry.30m',
+        ROUTING_KEY_NAME: getEnv(EnvironmentKeys.RABBITMQ_LOG_ROUTING_KEY),
+        DLQ_QUEUE_NAME: getEnv(EnvironmentKeys.RABBITMQ_LOG_DLQ),
     }
 }
