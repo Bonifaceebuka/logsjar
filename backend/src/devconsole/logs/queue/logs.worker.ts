@@ -6,6 +6,7 @@ import {
 import { CONFIGS } from '@/common/configs';
 import LogsService from '../logs.service';
 import { LogQueueMessage } from './logs.publisher';
+import { rabbitMQ } from '@/common/configs/rabbitmq';
 
 const MAX_RETRIES = 4;
 const {
@@ -219,4 +220,17 @@ export class LogWorker {
       },
     );
   }
+}
+
+export async function startWorkers(): Promise<void> {
+  const logsService = new LogsService();
+
+  const logWorker = new LogWorker(
+    rabbitMQ.getConsumerChannel(),
+    logsService,
+  );
+
+  await logWorker.start();
+
+  console.log("[Workers] all workers started");
 }

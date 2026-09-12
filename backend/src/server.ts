@@ -10,6 +10,7 @@ import { logger }
     from '@/common/configs/logger';
 import { getRedisClient } from './common/configs/redis';
 import "@/common/queues/workers";
+import { startWorkers } from './devconsole/logs/queue/logs.worker';
 
 let server: http.Server;
 
@@ -35,7 +36,9 @@ async function startServer(): Promise<void> {
         const servicesInitialized = await initializeServices();
         if (!servicesInitialized) throw new Error('Failed to initialize services');
         // Create HTTP server
-        const expressApp = await createExpressApp()
+        const expressApp = await createExpressApp();
+        await startWorkers()
+
         server = http.createServer(expressApp);
 
         server.listen(SERVER_PORT, () => {
