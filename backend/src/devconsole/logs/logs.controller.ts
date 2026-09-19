@@ -72,11 +72,11 @@ export class LogsController extends Controller {
     }
 
     logger.info(serviceResponse?.message);
-    this.setStatus(202);
+    this.setStatus(200);
     return successResponse({
       message: serviceResponse?.message as string,
       data: serviceResponse.data,
-      status_code: 202,
+      status_code: 200,
     });
   }
 }

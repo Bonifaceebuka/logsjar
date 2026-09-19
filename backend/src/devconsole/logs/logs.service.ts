@@ -134,27 +134,21 @@ export default class LogsService {
     let message;
     let logs
 
+  logs = this.logRepository.getRepo().createQueryBuilder('logs').where("logs.user_id = :user_id", { user_id })
+            .leftJoin("logs.apiKey", "apiKey")
+  
   if(api_key_id){
-    logs = await this.logRepository.getRepo().find({
-       where:{
-         user_id,
-         apiKey:{
-           uuid: api_key_id
-         }
-       },
-       order:{
-         created_at: "DESC"
-       } });
+    logs = logs.andWhere("apiKey.uuid = :api_key_id", { api_key_id });
   }
-  else{
-     logs = await this.logRepository.getRepo().find({
-      where:{
-        user_id
-      },
-      order:{
-        created_at: "DESC"
-      } });
-  }
+
+    logs = logs
+            .orderBy("logs.created_at","DESC")
+            .select([
+              'service', 'timestamp','level',
+              'message','type','logs.environment',
+              'apiKey.name'
+            ]);
+    logs = await logs.getRawMany();
 
     message = "Logs fetched successfully";
 
