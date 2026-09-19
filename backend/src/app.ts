@@ -8,7 +8,7 @@ import { gatewayMiddleware } from "./middlewares/gatewayMiddleware";
 import { CONFIGS } from "./common/configs";
 import { attachExpressReqAndRes } from "./middlewares/attachExpressReqAndRes";
 import cookieParser from "cookie-parser";
-import { Logsjar } from "@logsjar/expressjs";
+import { Logsjar } from "@bonifaceebuka/logsjar-expressjs";
 
 export async function app() : Promise<express.Application> {
     const app: express.Application = express();
