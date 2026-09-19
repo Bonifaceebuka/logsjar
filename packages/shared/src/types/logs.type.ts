@@ -9,7 +9,6 @@ export const LOG_LEVELS = [
 ] as const;
 
 export type LogLevel = (typeof LOG_LEVELS)[number];
-
 export interface User {
   id?: string;
   email?: string;

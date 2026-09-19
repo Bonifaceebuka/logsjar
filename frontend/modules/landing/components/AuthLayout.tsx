@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Logo from "@/components/ui/logo";
+import Logo from "@/common/components/ui/logo";
 
 export default function AuthLayout({
   children,

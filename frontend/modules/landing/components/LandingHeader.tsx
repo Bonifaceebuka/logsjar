@@ -9,16 +9,16 @@ import {
   LifeBuoy,
   LogOut,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/common/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import Logo from "@/components/ui/logo";
+} from "@/common/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback } from "@/common/components/ui/avatar";
+import Logo from "@/common/components/ui/logo";
 import { useClerk, useUser } from "@clerk/nextjs";
 
 export function LandingHeader() {

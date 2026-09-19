@@ -1,12 +1,12 @@
 import React from "react";
-import Logo from "@/components/ui/logo";
+import Logo from "@/common/components/ui/logo";
 import Link from "next/link";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@/common/components/ui/tooltip";
 
 export function LandingFooter() {
   const currentYear = new Date().getFullYear();

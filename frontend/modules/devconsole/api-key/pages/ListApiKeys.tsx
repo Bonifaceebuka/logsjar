@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react'
-import { Button } from "@/components/ui/button";
+import { Button } from "@/common/components/ui/button";
 
 import {
   Dialog,
@@ -9,14 +9,14 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-} from "@/components/ui/dialog";
+} from "@/common/components/ui/dialog";
 import { Plus, Lock, Key, Clipboard, Trash2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@/common/components/ui/tooltip";
 import NewApiKeyDialog from "@/modules/devconsole/api-key/components/NewApiKeyDialog";
 import { useFetchApiKeys } from '../api/api-key.api';
 import ListApiKeyTable from '../components/ListApiKeyTable';

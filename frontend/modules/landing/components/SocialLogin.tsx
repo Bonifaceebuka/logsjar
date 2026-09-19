@@ -9,7 +9,7 @@ import { useToast } from "@/common/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/common/components/ui/button";
 
 export default function SocialLogin() {
   const [isLoading, setIsLoading] = useState(false)
