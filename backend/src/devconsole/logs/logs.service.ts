@@ -1,8 +1,7 @@
 import { Service } from "typedi";
 import { ServiceResponseDTO } from "../../common/types/http.type";
-import { CreateNewLogEntryDto } from "./dtos/logs.dto";
 import { LogRepository } from "./repositories/logs.repository";
-import { IncomingLogEvent } from "./types/logs.type";
+import { IncomingLogEvent } from "@logsjar/shared";
 import { mapLogEventToEntity } from "./utils/log-events.mapper";
 import { LogsModel } from "./models/logs.model";
 import { parseNDJSON } from "./utils/ndjson-parser";
@@ -129,5 +128,40 @@ export default class LogsService {
         throw new AppError(message, 400)
       }
     }
+  }
+
+  public async fetchLogs(user_id: number, api_key_id?: string): Promise<ServiceResponseDTO> {
+    let message;
+    let logs
+
+  if(api_key_id){
+    logs = await this.logRepository.getRepo().find({
+       where:{
+         user_id,
+         apiKey:{
+           uuid: api_key_id
+         }
+       },
+       order:{
+         created_at: "DESC"
+       } });
+  }
+  else{
+     logs = await this.logRepository.getRepo().find({
+      where:{
+        user_id
+      },
+      order:{
+        created_at: "DESC"
+      } });
+  }
+
+    message = "Logs fetched successfully";
+
+    return {
+      successful: true,
+      data: logs,
+      message,
+    };
   }
 }

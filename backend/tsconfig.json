@@ -27,6 +27,6 @@
       "@websocket/*": ["websocket/*"]
     }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "../packages/shared/src/types/logs.type.ts"],
   "exclude": ["node_modules", "dist"]
 }

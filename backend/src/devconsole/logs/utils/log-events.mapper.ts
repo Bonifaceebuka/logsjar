@@ -1,5 +1,5 @@
 import { LogsModel } from '../models/logs.model';
-import { IncomingLogEvent } from '../types/logs.type';
+import { IncomingLogEvent } from '@logsjar/shared/src/types/logs.type';
 
 export function mapLogEventToEntity(
   event: IncomingLogEvent,

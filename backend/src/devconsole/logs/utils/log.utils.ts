@@ -1,7 +1,7 @@
 import {
   IncomingLogEvent,
   LOG_LEVELS,
-} from '../types/logs.type';
+} from '@logsjar/shared/src/types/logs.type';
 
 export function validateLogEvent(
   value: unknown,

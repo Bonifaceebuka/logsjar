@@ -38,7 +38,8 @@
     },
     "security": [
         {
-            "bearerAuth": []
+            "bearerAuth": [],
+            "sdkBearerAuth": []
         }
     ]
     },

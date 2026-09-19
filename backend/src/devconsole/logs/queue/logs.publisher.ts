@@ -1,7 +1,7 @@
 import {
   ConfirmChannel,
 } from 'amqplib';
-import { IncomingLogEvent } from '../types/logs.type';
+import { IncomingLogEvent } from '@logsjar/shared/src/types/logs.type';
 import { CONFIGS } from '@/common/configs';
 import { RabbitMQ } from '@/common/configs/rabbitmq';
 

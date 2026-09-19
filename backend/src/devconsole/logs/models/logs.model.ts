@@ -1,7 +1,8 @@
-import { Column, Entity, Index } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
 import { BaseModel } from "../../../common/baseModel";
 import { Service } from "typedi";
-import { LogLevel, LogType } from "../enums/logs.enums";
+import { LogLevelEnum, LogType } from "@logsjar/shared";
+import { ApiKeyModel } from "@/devconsole/api-key/models/apiKey.model";
 
 @Service()
 @Entity({ name: "logs" })
@@ -25,8 +26,8 @@ export class LogsModel extends BaseModel {
   @Column({nullable: true})
   type?: LogType;
 
-  @Column({nullable: true})
-  level?: LogLevel;
+  @Column({ type: "enum", enum:LogLevelEnum, nullable: true})
+  level?: LogLevelEnum;
 
   @Column({nullable: true, type: 'text'})
   message?: string;
@@ -45,4 +46,10 @@ export class LogsModel extends BaseModel {
 
   @Column()
   user_id!: number;
+
+  @ManyToOne(() => ApiKeyModel,{
+
+  })
+  @JoinColumn({ name: 'api_key_id', referencedColumnName: 'id' })
+  apiKey!: ApiKeyModel;
 }
