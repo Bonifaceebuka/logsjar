@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Button } from "@/common/components/ui/button";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/common/components/ui/tabs";
 import {
   ArrowUpCircle,
   Trash2,
@@ -15,7 +15,7 @@ import {
   SelectContent,
   SelectItem,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/common/components/ui/select";
 import {
   Table,
   TableHeader,
@@ -23,7 +23,7 @@ import {
   TableRow,
   TableBody,
   TableCell,
-} from "@/components/ui/table";
+} from "@/common/components/ui/table";
 import {
   Dialog,
   DialogContent,
@@ -32,7 +32,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/common/components/ui/dialog";
 // import { useUser } from "@clerk/nextjs";
 
 export default function Page() {

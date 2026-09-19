@@ -16,8 +16,8 @@ import {
   SidebarSeparator,
   SidebarTrigger,
   SidebarRail,
-} from "@/components/ui/sidebar";
-import { Button } from "@/components/ui/button";
+} from "@/common/components/ui/sidebar";
+import { Button } from "@/common/components/ui/button";
 import {
   Home,
   Activity,
@@ -28,9 +28,7 @@ import {
   Settings as SettingsIcon,
   User2,
 } from "lucide-react";
-import Logo from "../ui/logo";
-import { UserButton, useUser } from "@clerk/nextjs";
-import { dark } from "@clerk/themes";
+import Logo from "../../common/components/ui/logo";
 
 export function DashboardSidebar({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -38,12 +36,12 @@ export function DashboardSidebar({ children }: { children: React.ReactNode }) {
 
   const items = [
     { label: "Overview", href: "/console/", Icon: Home },
-    { label: "Live Logs", href: "/console/live-logs", Icon: Activity },
-    { label: "Queries", href: "/console/queries", Icon: SearchIcon },
-    { label: "Alerts", href: "/console/alerts", Icon: Bell },
-    { label: "Integrations", href: "/console/integrations", Icon: Plug },
+    { label: "Live Logs", href: "/console/logs", Icon: Activity },
+    // { label: "Queries", href: "/console/queries", Icon: SearchIcon },
+    // { label: "Alerts", href: "/console/alerts", Icon: Bell },
+    // { label: "Integrations", href: "/console/integrations", Icon: Plug },
     { label: "API Keys", href: "/console/api-keys", Icon: Key },
-    { label: "Settings", href: "/console/settings", Icon: SettingsIcon },
+    // { label: "Settings", href: "/console/settings", Icon: SettingsIcon },
   ];
 
   return (

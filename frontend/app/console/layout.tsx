@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "../globals.css";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { TooltipProvider } from "@/common/components/ui/tooltip";
 import DashboardSidebar from "@/components/devconsole/SidebarNav";
-import { SidebarInset } from "@/components/ui/sidebar";
+import { SidebarInset } from "@/common/components/ui/sidebar";
 import TopBar from "@/components/devconsole/TopBar";
 
 export const metadata: Metadata = {

@@ -1,8 +1,8 @@
 import { API_KEY_ENVIRONMENTS } from "@logsjar/shared";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/common/components/ui/dialog";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/common/components/ui/select";
+import { Input } from "@/common/components/ui/input";
+import { Button } from '@/common/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import { NewApiKeyFormData, newApiKeySchema } from '../dtos/api-key-schema';

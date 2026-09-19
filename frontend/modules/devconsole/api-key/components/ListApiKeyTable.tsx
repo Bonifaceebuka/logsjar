@@ -6,14 +6,14 @@ import {
     TableRow,
     TableBody,
     TableCell,
-} from "@/components/ui/table";
+} from "@/common/components/ui/table";
 import { Trash2 } from 'lucide-react';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Button } from '@/components/ui/button';
+} from "@/common/components/ui/tooltip";
+import { Button } from '@/common/components/ui/button';
 import { useToast } from '@/common/hooks/use-toast';
 import { timeAgo } from '@/common/utils/date.util';
 

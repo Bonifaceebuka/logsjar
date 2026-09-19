@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Input } from "@/common/components/ui/input";
+import { Button } from "@/common/components/ui/button";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/common/components/ui/tabs";
 import {
   Table,
   TableHeader,
@@ -10,7 +10,7 @@ import {
   TableRow,
   TableBody,
   TableCell,
-} from "@/components/ui/table";
+} from "@/common/components/ui/table";
 import { Play, XCircle, Search, Clipboard, Loader2 } from "lucide-react";
 
 type ResultRow = {

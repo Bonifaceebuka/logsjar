@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import localFont from "next/font/local";
-import { Toaster as Sonner } from "@/components/ui/sonner";
+import { Toaster as Sonner } from "@/common/components/ui/sonner";
 import TanstackQueryProvider from "@/common/providers/TanstackQueryProvider";
 import { APP_CONFIGS } from "@/common/configs";
 import { GoogleOAuthProvider } from "@react-oauth/google";

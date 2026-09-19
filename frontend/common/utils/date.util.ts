@@ -29,3 +29,25 @@ export function timeAgo(dateString: string): string {
 
   return "just now";
 }
+
+export function formatShortDate(timestamp: string | number) {
+  console.log({timestamp})
+  const value = Number(timestamp);
+
+  if (Number.isNaN(value)) {
+    return "Invalid Date";
+  }
+
+  const date = new Date(
+    value < 10_000_000_000 ? value * 1000 : value
+  );
+
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
